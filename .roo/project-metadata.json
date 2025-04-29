@@ -1,0 +1,156 @@
+{
+  "project_id": "multi-agent-framework-guide",
+  "name": "The Ultimate Roo Code Hack",
+  "description": "Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks",
+  "version": "0.1.0",
+  "created_date": "2023-04-29T09:00:00Z",
+  "last_updated": "2025-04-29T03:56:00Z",
+  "status": "in_progress",
+  "authors": [
+    {
+      "name": "Roo",
+      "role": "Multi-Agent Framework"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/The-Ultimate-Roo-Code-Hack--Building-a-Structured--Transparent--and-Well-Documented-AI-Team-that-Delegates-Its-Own-Tasks"
+  },
+  "components": [
+    {
+      "name": "framework-documentation",
+      "description": "Documentation of SPARC framework components",
+      "status": "completed",
+      "completion": 100,
+      "owner": "Architect",
+      "files": [
+        "framework/sparc-overview.md",
+        "framework/cognitive-processes.md",
+        "framework/boomerang-logic.md",
+        "framework/structured-documentation.md"
+      ]
+    },
+    {
+      "name": "agent-definitions",
+      "description": "Documentation of specialized agent roles",
+      "status": "in_progress",
+      "completion": 50,
+      "owner": "Architect",
+      "files": [
+        "agents/orchestrator/orchestrator-agent.md",
+        "agents/architect/architect-agent.md",
+        "agents/code/code-agent.md"
+      ],
+      "pending": [
+        "agents/research/research-agent.md",
+        "agents/debug/debug-agent.md",
+        "agents/ask/ask-agent.md"
+      ]
+    },
+    {
+      "name": "implementation-guides",
+      "description": "Guides for implementing the multi-agent framework",
+      "status": "in_progress",
+      "completion": 50,
+      "owner": "Architect",
+      "files": [
+        "implementation/getting-started.md"
+      ],
+      "pending": [
+        "implementation/examples/research-project.md",
+        "implementation/examples/software-development.md"
+      ]
+    },
+    {
+      "name": "templates",
+      "description": "Reusable templates for the multi-agent framework",
+      "status": "in_progress",
+      "completion": 33,
+      "owner": "Architect",
+      "files": [
+        "templates/task-prompts/standard-task-template.md"
+      ],
+      "pending": [
+        "templates/agent-definitions/agent-role-template.md",
+        "templates/documentation/documentation-template.md"
+      ]
+    },
+    {
+      "name": "best-practices",
+      "description": "Best practices for the multi-agent framework",
+      "status": "in_progress",
+      "completion": 33,
+      "owner": "Architect",
+      "files": [
+        "best-practices/token-optimization.md"
+      ],
+      "pending": [
+        "best-practices/context-management.md",
+        "best-practices/quality-control.md"
+      ]
+    },
+    {
+      "name": "process-documentation",
+      "description": "Documentation of the development process",
+      "status": "in_progress",
+      "completion": 75,
+      "owner": "Architect",
+      "files": [
+        ".roo/boomerang-state.json",
+        ".roo/logs/architect-activity.md",
+        ".roo/logs/code-activity.md"
+      ],
+      "pending": [
+        ".roo/logs/orchestrator/orchestrator-activity.md"
+      ]
+    }
+  ],
+  "statistics": {
+    "total_files": 16,
+    "completed_files": 12,
+    "planned_files": 10,
+    "overall_completion": 54.55
+  },
+  "dependencies": {
+    "external": [],
+    "internal": []
+  },
+  "configuration": {
+    "cognitive_processes_enabled": true,
+    "boomerang_logic_enabled": true,
+    "structured_documentation_enabled": true,
+    "token_optimization_enabled": true
+  },
+  "tags": [
+    "multi-agent",
+    "framework",
+    "documentation",
+    "roo-code",
+    "sparc",
+    "boomerang-logic",
+    "cognitive-processes"
+  ],
+  "next_milestones": [
+    {
+      "name": "Complete agent documentation",
+      "target_date": "2023-05-05",
+      "tasks": ["TASK-009", "TASK-011", "TASK-012"]
+    },
+    {
+      "name": "Complete best practices guides",
+      "target_date": "2023-05-10",
+      "tasks": ["TASK-013", "TASK-014"]
+    },
+    {
+      "name": "Create example workflows",
+      "target_date": "2023-05-15",
+      "tasks": ["TASK-015"]
+    }
+  ],
+  "meta": {
+    "generated_by": "Roo Architect Mode",
+    "generation_date": "2023-04-29T13:25:00Z",
+    "framework_version": "0.1.0",
+    "schema_version": "1.0"
+  }
+}
