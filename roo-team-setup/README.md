@@ -29,7 +29,7 @@ npm install -g roo-team-setup
 Then run it anytime:
 
 ```bash
-roo-setup
+roo-team-setup
 ```
 
 ## What Gets Created
@@ -93,3 +93,27 @@ The setup includes configuration for these specialized modes:
 ## License
 
 MIT
+
+## For Package Maintainers
+
+If you're maintaining this package and need to publish it to npm, follow these steps to set up authentication:
+
+### Setting up NPM_TOKEN in GitHub Secrets
+
+1. **Create a new npm access token**:
+   - Go to your npm account settings at https://www.npmjs.com/settings/your-username/tokens
+   - Click "Generate New Token" → "Classic Token"
+   - Select "Automation" as the token type (gives publish access)
+   - Copy the generated token
+
+2. **Add token to GitHub repository secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `NPM_TOKEN`
+   - Value: Paste your npm token
+   - Click "Add secret"
+
+3. **Verify workflow file**:
+   - Make sure the GitHub Actions workflow in `.github/workflows/npm-publish.yml` is using the correct secret name
+
+After setting up the token, any pushes to the main branch that modify files in the `roo-team-setup` directory will trigger an automatic publish to npm with an incremented version number.

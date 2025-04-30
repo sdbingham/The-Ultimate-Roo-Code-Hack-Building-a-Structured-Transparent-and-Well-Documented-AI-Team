@@ -16,7 +16,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-          scope: '@mnehmos'
       - name: Install dependencies
         run: cd roo-team-setup && npm install
       - name: Auto-bump version
@@ -33,7 +32,7 @@ jobs:
       - name: Publish to npm
         run: |
           cd roo-team-setup
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
-          npm publish
+          npm config set //registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}
+          npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
