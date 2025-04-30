@@ -169,8 +169,8 @@ Below is an architectural overview of how the Roo framework operates:
 │  │ • Create memory folder │───►│ • Store project data  │       │
 │  │ • Extract key learnings│    │ • Index for retrieval │       │
 │  │ • Organize artifacts   │    │ • Version tracking    │       │
-│  └────────────────────────┘    └─────────┬─────────────┘       │    Feedback loop w/ User
-│                                           │                     |___________________|  USER |
+│  └────────────────────────┘    └─────────┬─────────────┘       │ 
+│                                           │                     |
 │                                           ▼                     │
 │  ┌────────────────────────┐    ┌───────────────────────┐       │
 │  │  Memory MCP            │    │   RAG System          │       │
@@ -185,7 +185,7 @@ Below is an architectural overview of how the Roo framework operates:
                  └───────────────────────────────────┐
                                                      ▼
 ┌─────────────────────────────────┐      ┌─────────────────────────┐
-│           Orchestrator          │      │         User            │
+│           Orchestrator          │      │  Feedback loop w/ User  │  
 │     (System Prompt contains:    │      │     (Customer with      │
 │      roles, definitions,        │◄─────┤     minimal context)    │
 │      systems, processes,        │      │                         │
