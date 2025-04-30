@@ -78,26 +78,35 @@ async function main() {
     await fs.ensureDir(path.join(targetDir, 'best-practices'));
     await fs.ensureDir(path.join(targetDir, 'templates/task-prompts'));
     
-    // Create agent directories and example files
+    // Create agent directories and generate example files
     for (const mode of modes) {
       let dirName = mode;
       if (mode === 'deep-research-agent') dirName = 'research';
       
       await fs.ensureDir(path.join(targetDir, `agents/${dirName}`));
       
-      // Create example agent file
-      await fs.copyFile(
-        path.join(__dirname, `../templates/agent-${mode}.md`),
-        path.join(targetDir, `agents/${dirName}/${dirName}-agent.md`)
+      // Create example agent file with basic content
+      const agentContent = `# ${dirName.charAt(0).toUpperCase() + dirName.slice(1)} Agent\n\nThis is a placeholder file for the ${dirName} agent documentation.\n\n## Role Definition\n\nDefine the core responsibilities of this agent mode here.\n\n## Capabilities\n\nList the capabilities of this agent mode here.\n`;
+      
+      await fs.writeFile(
+        path.join(targetDir, `agents/${dirName}/${dirName}-agent.md`),
+        agentContent
       );
     }
     
-    // Copy framework files
-    const frameworkFiles = ['sparc-overview.md', 'boomerang-logic.md', 'cognitive-processes.md'];
+    // Create framework files with basic content
+    const frameworkFiles = [
+      { name: 'sparc-overview.md', title: 'SPARC Framework Overview' },
+      { name: 'boomerang-logic.md', title: 'Boomerang Logic Pattern' },
+      { name: 'cognitive-processes.md', title: 'Cognitive Processes' }
+    ];
+    
     for (const file of frameworkFiles) {
-      await fs.copyFile(
-        path.join(__dirname, `../templates/framework-${file}`),
-        path.join(targetDir, `framework/${file}`)
+      const fileContent = `# ${file.title}\n\nThis is a placeholder file for ${file.title} documentation.\n\n## Overview\n\nProvide an overview of the ${file.title} here.\n\n## Implementation\n\nDescribe how to implement the ${file.title} here.\n`;
+      
+      await fs.writeFile(
+        path.join(targetDir, `framework/${file.name}`),
+        fileContent
       );
     }
     

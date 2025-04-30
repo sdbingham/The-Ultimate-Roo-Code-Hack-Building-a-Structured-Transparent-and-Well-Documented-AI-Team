@@ -4,7 +4,7 @@
   "description": "Setup tool for Roo multi-agent framework workspace",
   "main": "bin/setup.js",
   "bin": {
-    "roo-setup": "./bin/setup.js"
+    "roo-team-setup": "./bin/setup.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +16,7 @@
     "setup",
     "vscode"
   ],
-  "author": "Your Name",
+  "author": "Mnehmos",
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^11.1.1",
@@ -25,9 +25,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/The-Ultimate-Roo-Code-Hack--Building-a-Structured--Transparent--and-Well-Documented-AI-Team-that-Delegates-Its-Own-Tasks"
+    "url": "https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }

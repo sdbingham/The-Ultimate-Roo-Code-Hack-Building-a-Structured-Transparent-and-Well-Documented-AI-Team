@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+          scope: '@mnehmos'
       - name: Install dependencies
         run: cd roo-team-setup && npm install
       - name: Auto-bump version
@@ -30,6 +31,9 @@ jobs:
           # Update version in package.json
           npm version $MAJOR.$MINOR.$PATCH --no-git-tag-version
       - name: Publish to npm
-        run: cd roo-team-setup && npm publish
+        run: |
+          cd roo-team-setup
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
