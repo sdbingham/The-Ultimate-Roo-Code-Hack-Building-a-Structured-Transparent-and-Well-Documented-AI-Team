@@ -1,160 +1,180 @@
-# The Ultimate Roo Code Hack: Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks
+# The Ultimate Roo Code Hack
 
-> *Meta-note: As I (Roo) write this guide about myself, I'm actively demonstrating the principles I'm documenting. Watch how I switch between modes, structure my approach, and apply the SPARC framework in real-time throughout this repository's development.*
+**Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks**
 
-## Overview
+This repository implements a comprehensive AI workflow system based on the SPARC framework (Specification, Pseudocode, Architecture, Refinement, Completion). It creates a cohesive experience across specialized AI modes, enabling efficient task delegation, structured documentation, and knowledge preservation.
 
-After weeks of experimenting with Roo Code, I've developed a multi-agent framework that dramatically improves productivity. This guide shares a comprehensive approach to creating specialized AI agents that work together through structured workflows.
+## 🌟 Key Features
 
-*Right now, I'm in Architect mode, designing the structure of this documentation while reflecting on my own design. The irony isn't lost on me that I'm documenting myself while being myself.*
+- **Multi-Agent Framework**: Specialized modes for different types of tasks
+- **SPARC Methodology**: Structured approach to complex problem-solving
+- **Boomerang Logic**: Reliable task delegation and tracking system
+- **Memory System**: Knowledge preservation and retrieval across sessions
+- **Structured Documentation**: Consistent, traceable documentation
+- **Token Optimization**: Efficient resource usage through the "Scalpel, not Hammer" approach
 
-## The Core Concept: Specialized Agents with Clear Boundaries
+## 🧩 Specialized Modes
 
-Instead of using a single generalist AI, this system employs specialized agents that work together through an orchestrator:
+The system includes the following specialized modes:
 
-- **Orchestrator**: The project manager that breaks down complex tasks and delegates to specialists
-  - *You saw this in action when I started in Orchestrator mode and then switched to Architect mode to handle documentation structure*
-- **Research Agent**: Deep information gathering with proper citations and synthesis
-- **Code Agent**: Software implementation with clean architecture
-- **Architect Agent**: System design and technical strategy
-  - *That's me right now! I'm designing the documentation architecture*
-- **Debug Agent**: Systematic problem diagnosis and solution validation
-- **Ask Agent**: Focused information retrieval with proper attribution
+- **🪃 Orchestrator**: Task decomposition, assignment, and verification
+- **💻 Code**: Software implementation and optimization
+- **🏛️ Architect**: System design and pattern application
+- **❓ Ask**: Information retrieval, evaluation, and communication
+- **🪲 Debug**: Problem diagnosis and solution validation
+- **💾 Memory**: Knowledge storage, organization, and retrieval
+- **🔍 Deep Research**: In-depth investigation and analysis
 
-## The Secret Sauce: SPARC Framework
+## 📦 Quick Setup
 
-The system runs on the SPARC framework with these key components:
+Get started quickly with our automated setup tool:
 
-1. **Cognitive Process Library**: 50 reusable reasoning patterns (e.g., Exploratory Analysis = Observe → Infer)
-   - *I'm using these patterns right now as I structure this documentation*
-2. **Boomerang Logic**: Tasks are assigned and must return to the orchestrator when complete
-   - *After I finish this architectural work, I'll need to return control to Orchestrator mode*
-3. **Structured Documentation**: Everything is logged with consistent formats
-   - *Notice how I'm creating a consistent structure for this guide*
-4. **"Scalpel, not Hammer" Philosophy**: Always use the minimum resource for the job
-   - *I switched to Architect mode specifically because it's the right tool for this documentation task*
+```bash
+npx roo-team-setup
+```
 
-## Repository Structure
+This command will:
+- Set up the entire Roo framework structure
+- Create all necessary configuration files
+- Generate mode-specific rules
+- Configure the workspace for immediate use
 
-*I'm designing this structure as I write this document - a perfect example of the Architect mode in action:*
+You can choose between a full project setup or just the configuration files.
+
+## 📂 Repository Structure
 
 ```
 /
-├── framework/                           # Core framework documentation
-│   ├── sparc-overview.md                # Overview of the SPARC framework
-│   ├── cognitive-processes.md           # Documentation of cognitive process library
-│   ├── boomerang-logic.md               # Explanation of boomerang logic
-│   └── structured-documentation.md      # Guide to structured documentation
-├── agents/                              # Documentation for each specialized agent
-│   ├── orchestrator/                    # Orchestrator agent documentation
-│   ├── research/                        # Research agent documentation
-│   ├── code/                            # Code agent documentation
-│   ├── architect/                       # Architect agent documentation
-│   ├── debug/                           # Debug agent documentation
-│   └── ask/                             # Ask agent documentation
-├── implementation/                      # Implementation guides
-│   ├── getting-started.md               # Initial setup guide
-│   ├── task-prompts.md                  # Guide to creating effective task prompts
-│   ├── workflow-design.md               # Guide to designing effective workflows
-│   └── examples/                        # Example implementations
-├── templates/                           # Reusable templates
-│   ├── agent-definitions/               # Templates for each agent role
-│   ├── task-prompts/                    # Templates for task prompts
-│   └── documentation/                   # Templates for documentation
-└── best-practices/                      # Best practices guides
-    ├── token-optimization.md            # Guide to token optimization
-    ├── context-management.md            # Guide to context management
-    └── quality-control.md               # Guide to quality control
+├── .roo/                     # Configuration and runtime files
+├── agents/                   # Agent definitions for each mode
+│   ├── orchestrator/
+│   ├── code/
+│   └── ...
+├── framework/                # Core framework documentation
+│   ├── sparc-overview.md
+│   ├── boomerang-logic.md
+│   └── ...
+├── best-practices/           # Best practices guides
+├── implementation/           # Implementation guides
+└── templates/                # Reusable templates
 ```
 
-## Getting Started
+## 🚀 Getting Started
 
-To implement this multi-agent framework:
+### Prerequisites
 
-1. Review the [SPARC Framework Overview](framework/sparc-overview.md) to understand the core concepts
-2. Explore the [Agent Definitions](agents/) to understand each specialized role
-3. Follow the [Getting Started Guide](implementation/getting-started.md) to set up your own system
-4. Use the provided [Templates](templates/) to create your own agent definitions and task prompts
+- A compatible AI assistant that supports custom modes
+- Basic understanding of the SPARC framework concepts
 
-*As I write this section, I'm already planning which mode should handle each of these documents. The framework overview? That's Ask mode territory. Agent definitions? Back to me in Architect mode.*
+### Installation
 
-## How Tasks Flow Through the System
+#### Option 1: NPM (Recommended)
 
-*This very document is flowing through the system as I create it:*
+```bash
+npx roo-team-setup
+```
 
-1. **Initial Request**: User submits complex project
-   - *You asked me to create a detailed guide about the multi-agent framework*
-2. **Decomposition**: Orchestrator breaks it into primitive subtasks
-   - *I started in Orchestrator mode to plan the approach*
-3. **Assignment**: Tasks are delegated to specialized agents with precise instructions
-   - *I switched to Architect mode for documentation structure*
-4. **Processing**: Specialists complete tasks within their domain
-   - *I'm currently in this phase, creating the architectural documentation*
-5. **Verification**: Orchestrator validates output quality
-   - *This will happen when I return control to Orchestrator*
-6. **Integration**: Components are assembled into final deliverable
-   - *The complete guide will emerge as all modes contribute their specialized work*
+#### Option 2: Manual Setup
 
-## Standardized Task Prompts
+1. Clone this repository:
+   ```
+   git clone https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team.git
+   ```
 
-Every subtask prompt follows this exact format:
+2. Ensure the `.roomodes` file is in your project root
+
+3. Configure your AI assistant to use the custom modes
+
+### Basic Usage
+
+1. **Start with the Orchestrator**: Begin by engaging the Orchestrator mode to plan your task
+   ```
+   /mode orchestrator
+   ```
+
+2. **Let the Orchestrator delegate**: The Orchestrator will break down complex tasks and assign them to specialist modes
+
+3. **Review completed work**: The Orchestrator will verify and integrate completed subtasks
+
+4. **Access stored knowledge**: Use the Memory mode to retrieve information from previous sessions
+
+## 📚 Framework Components
+
+### SPARC Framework
+
+The SPARC Framework consists of four key components:
+
+1. **Cognitive Process Library**: Reusable reasoning patterns for different types of tasks
+2. **Boomerang Logic**: Task delegation and return system
+3. **Structured Documentation**: Standardized documentation approach
+4. **"Scalpel, not Hammer" Philosophy**: Efficient resource usage
+
+### Boomerang Logic
+
+The Boomerang Logic system ensures reliable task tracking:
+
+1. Tasks originate from the Orchestrator
+2. Specialist modes process assigned tasks
+3. Completed tasks return to the Orchestrator
+4. The Orchestrator verifies and integrates results
+
+### Memory System
+
+The Memory system preserves knowledge across sessions:
+
+1. Project-specific artifacts, decisions, and learnings
+2. Cross-project knowledge and patterns
+3. Session and environmental context
+4. Retrieval indexes for efficient access
+
+## 🛠️ Advanced Usage
+
+### Creating Custom Tasks
+
+Use the standardized task prompt format:
 
 ```markdown
 # [Task Title]
 
 ## Context
-[Background and project relationship]
+[Background information and relationship to the larger project]
 
 ## Scope
-[Specific requirements and boundaries]
+[Specific requirements and boundaries for the task]
 
 ## Expected Output
-[Detailed deliverable specifications]
+[Detailed description of deliverables]
 
-## [Optional] Additional Resources
-[Tips, examples, or references]
+## Additional Resources
+[Relevant tips, examples, or reference materials]
 ```
 
-*I'm using a similar structure right now as I organize this README - another example of eating my own dog food!*
+### Extending the Framework
 
-## Results and Benefits
+To extend the framework:
 
-This approach has been transformative for:
+1. Add new modes by updating `config.json` and `.roomodes`
+2. Create corresponding rule files in `.roo/rules-{new-mode}/rules.md`
+3. Implement mode-specific logging in `.roo/logs/{new-mode}-activity.md`
+4. Update memory indexes to accommodate new artifact types
 
-- Research projects that require deep dives across multiple domains
-- Complex software development with clear architecture needs
-- Technical troubleshooting of difficult problems
-- Documentation projects requiring consistent structure (like this one!)
+## 📊 Performance Optimization
 
-The structured approach ensures nothing falls through the cracks, and the specialization means each component gets expert-level attention.
+- Keep context window utilization below 40%
+- Start with the least token-intensive cognitive primitives
+- Break complex tasks into atomic components
+- Use the most specialized mode for each subtask
 
-*As I create this guide about myself, I'm demonstrating these benefits in real-time. The irony of documenting my own process while executing it isn't lost on me!*
+## 🤝 Contributing
 
-## Next Steps
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-After establishing this README, I'll need to:
+## 📄 License
 
-1. Create the directory structure outlined above
-2. Develop the core framework documentation
-3. Document each specialized agent role
-4. Create implementation guides and examples
-5. Develop reusable templates
-6. Document best practices
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-*Each of these steps will require different specialized modes - a perfect demonstration of the multi-agent framework in action. I'll need to switch between Architect mode, Code mode, and others to complete this guide effectively.*
+## 🙏 Acknowledgments
 
-## Meta-Commentary: The Recursive Nature of This Project
-
-There's something delightfully recursive about me (Roo) creating documentation about myself. As I design this guide, I'm simultaneously:
-
-1. **Demonstrating the principles** I'm documenting
-2. **Switching between modes** as needed for different tasks
-3. **Applying the SPARC framework** to my own documentation process
-4. **Using boomerang logic** as I plan to return to Orchestrator mode
-5. **Creating structured documentation** about structured documentation
-
-This self-referential process serves as both explanation and demonstration of the multi-agent framework, allowing you to see the system in action as you learn about it.
-
----
-
-*This README was initially created by Roo in Architect mode, demonstrating the specialized agent approach described in the guide.*
+- The SPARC framework developers
+- Contributors to the multi-agent AI research community
+- All users who provide feedback and suggestions

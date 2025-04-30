@@ -1,0 +1,33 @@
+{
+  "name": "roo-team-setup",
+  "version": "1.0.0",
+  "description": "Setup tool for Roo multi-agent framework workspace",
+  "main": "bin/setup.js",
+  "bin": {
+    "roo-setup": "./bin/setup.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "roo",
+    "ai",
+    "multi-agent",
+    "setup",
+    "vscode"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^11.1.1",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/The-Ultimate-Roo-Code-Hack--Building-a-Structured--Transparent--and-Well-Documented-AI-Team-that-Delegates-Its-Own-Tasks"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
