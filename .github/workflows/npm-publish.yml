@@ -8,16 +8,33 @@ on:
       - 'roo-team-setup/**'
 
 jobs:
-  publish-npm:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+          node-version: '16'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Authenticate NPM
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Display environment info
+        run: |
+          cd roo-team-setup
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          echo "NPM configuration:"
+          npm config list
+
       - name: Install dependencies
         run: cd roo-team-setup && npm install
+
       - name: Auto-bump version
         run: |
           cd roo-team-setup
@@ -29,22 +46,12 @@ jobs:
           PATCH=$((PATCH + 1))
           # Update version in package.json
           npm version $MAJOR.$MINOR.$PATCH --no-git-tag-version
-      - name: Debug npm configuration
-        run: |
-          cd roo-team-setup
-          echo "Checking npm config..."
-          npm config list
-          echo "Node version: $(node -v)"
-          echo "NPM version: $(npm -v)"
-          
-      - name: Publish to npm
-        run: |
-          cd roo-team-setup
-          echo "Creating .npmrc with auth token..."
-          echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
-          echo "Contents of .npmrc (redacted):"
-          sed 's/_authToken=.*/_authToken=REDACTED/' .npmrc
-          echo "Publishing package..."
-          npm publish --verbose --access public
+          echo "New version: $(node -p "require('./package.json').version")"
+
+      - name: Run tests
+        run: cd roo-team-setup && npm test || true
+
+      - name: Publish to NPM
+        run: cd roo-team-setup && npm publish
         env:
-          NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
