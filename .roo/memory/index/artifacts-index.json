@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "last_updated": "2025-04-30T12:32:00Z",
+  "artifacts": [
+    {
+      "id": "artifact-001",
+      "title": "Memory Mode System Diagram",
+      "project_id": "sample-project",
+      "task_id": "memory-mode-setup-001",
+      "path": ".roo/memory/projects/sample-project/artifacts/memory-mode-diagram.md",
+      "type": "diagram",
+      "format": "markdown",
+      "created_date": "2025-04-30T12:32:00Z",
+      "last_updated": "2025-04-30T12:32:00Z",
+      "owner": "Code",
+      "tags": ["memory-mode", "diagram", "architecture"],
+      "related_artifacts": []
+    }
+  ]
+}
