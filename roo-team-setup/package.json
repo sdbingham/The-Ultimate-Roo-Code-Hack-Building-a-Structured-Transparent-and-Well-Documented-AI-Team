@@ -7,7 +7,9 @@
     "roo-team-setup": "./bin/setup.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check-workflow": "node scripts/check-workflow.js",
+    "test-npm-auth": "node scripts/test-npm-auth.js"
   },
   "keywords": [
     "roo",

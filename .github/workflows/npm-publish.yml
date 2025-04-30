@@ -29,10 +29,22 @@ jobs:
           PATCH=$((PATCH + 1))
           # Update version in package.json
           npm version $MAJOR.$MINOR.$PATCH --no-git-tag-version
+      - name: Debug npm configuration
+        run: |
+          cd roo-team-setup
+          echo "Checking npm config..."
+          npm config list
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          
       - name: Publish to npm
         run: |
           cd roo-team-setup
-          npm config set //registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}
-          npm publish --access public
+          echo "Creating .npmrc with auth token..."
+          echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
+          echo "Contents of .npmrc (redacted):"
+          sed 's/_authToken=.*/_authToken=REDACTED/' .npmrc
+          echo "Publishing package..."
+          npm publish --verbose --access public
         env:
           NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

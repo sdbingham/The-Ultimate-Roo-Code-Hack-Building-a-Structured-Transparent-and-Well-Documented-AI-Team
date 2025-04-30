@@ -117,3 +117,39 @@ If you're maintaining this package and need to publish it to npm, follow these s
    - Make sure the GitHub Actions workflow in `.github/workflows/npm-publish.yml` is using the correct secret name
 
 After setting up the token, any pushes to the main branch that modify files in the `roo-team-setup` directory will trigger an automatic publish to npm with an incremented version number.
+
+### Troubleshooting Tools
+
+This package includes diagnostic tools to help troubleshoot npm publishing issues:
+
+#### 1. Workflow Status Checker
+
+Check the status of GitHub workflow runs and analyze failures:
+
+```bash
+# Export your GitHub token first
+export GITHUB_TOKEN=your_github_personal_access_token
+npm run check-workflow
+```
+
+This tool will:
+- List recent workflow runs
+- Show detailed information about failed runs
+- Provide specific guidance for npm publishing errors
+
+#### 2. NPM Authentication Tester
+
+Test your local npm configuration and authentication status:
+
+```bash
+npm run test-npm-auth
+```
+
+This tool will:
+- Check npm version and registry configuration
+- Verify existence and content of .npmrc files
+- Test your npm authentication status
+- Examine package.json configuration
+- Provide recommendations for fixing common issues
+
+These tools can help diagnose issues with GitHub Actions npm publishing by comparing your local setup with the GitHub Actions environment.
