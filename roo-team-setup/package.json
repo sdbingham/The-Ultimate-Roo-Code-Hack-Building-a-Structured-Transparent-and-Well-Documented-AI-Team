@@ -1,6 +1,6 @@
 {
   "name": "roo-team-setup",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Setup tool for Roo multi-agent framework workspace",
   "main": "bin/setup.js",
   "bin": {
