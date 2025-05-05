@@ -1,4 +1,4 @@
-# The Ultimate Roo Code Hack
+# Building a Structured Transparent and Well Documented AI Team (In Roo Code)
 
 **Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks**
 
