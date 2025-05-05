@@ -242,11 +242,7 @@ You can choose between a full project setup or just the configuration files.
 
 ### Installation
 
-#### Option 1: NPM (Recommended)
-
-```bash
-npx roo-team-setup
-```
+#### Option 1: NPM (Coming soon waiting to learn more about .roo structure and how we can inject prompts)
 
 #### Option 2: Manual Setup
 
@@ -366,5 +362,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🙏 Acknowledgments
 
 - The SPARC framework developers
-- Contributors to the multi-agent AI research community
+- Contributors to the multi-agent AI research community (Shout out to Roo Code)
 - All users who provide feedback and suggestions
