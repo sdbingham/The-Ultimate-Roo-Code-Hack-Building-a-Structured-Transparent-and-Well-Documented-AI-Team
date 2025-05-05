@@ -126,7 +126,7 @@ Here's a complete example of creating a custom "Researcher" mode:
 
 To ensure consistency in your mode configurations:
 
-1. **Remove deprecated references**: Don't reference `.roo` directory structures in new configurations
+1. **Use correct directory references**: Use `.roomodes` for mode assignments and `.roo` for notes and documentation
 2. **Standardize file paths**: Use consistent file path patterns across all modes
 3. **Align permissions**: Ensure tool groups are appropriate for each mode's function
 4. **Maintain consistent formatting**: Follow the same JSON structure for all modes

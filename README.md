@@ -173,8 +173,8 @@ Below is an architectural overview of how the Roo framework operates:
 │  │ • Create memory folder │───►│ • Store project data  │       │
 │  │ • Extract key learnings│    │ • Index for retrieval │       │
 │  │ • Organize artifacts   │    │ • Version tracking    │       │
-│  └────────────────────────┘    └─────────┬─────────────┘       │    Feedback loop w/ User
-│                                           │                     |___________________|  USER |
+│  └────────────────────────┘    └─────────┬─────────────┘       │
+│                                           │                     |
 │                                           ▼                     │
 │  ┌────────────────────────┐    ┌───────────────────────┐       │
 │  │  Memory MCP            │    │   RAG System          │       │
@@ -219,7 +219,7 @@ You can choose between a full project setup or just the configuration files.
 
 ```
 /
-├── .roo/                     # Configuration and runtime files
+├── .roo/                     # Notes, logs, and documentation files
 ├── agents/                   # Agent definitions for each mode
 │   ├── orchestrator/
 │   ├── code/
@@ -242,10 +242,10 @@ You can choose between a full project setup or just the configuration files.
 
 ### Installation
 
-#### Option 1: NPM (Recommended)
+#### Option 1: NPM (Coming Soon)
 
-```bash
-npx roo-team-setup
+```
+
 ```
 
 #### Option 2: Manual Setup
@@ -255,9 +255,29 @@ npx roo-team-setup
    git clone https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team.git
    ```
 
-2. Ensure the `.roomodes` file is in your project root
+2. Copy the `.roomodes` file to your project root
 
-3. Configure your AI assistant to use the custom modes
+3. Configure your AI assistant to use the custom modes:
+   - Click the "Modes" button in the Roo sidebar
+   - Select "Edit Project Modes (.roomodes)"
+   - Verify that the content matches the `.roomodes` file from this repository
+   - Click "Save"
+
+4. Set up the custom instructions:
+   - Click the "Modes" button in the Roo sidebar
+   - Scroll down to "Custom Instructions for All Modes"
+   - Copy the contents of `templates/custom-instructions-for-all-modes.md`
+   - Paste into the Custom Instructions field
+   - Click "Save"
+
+5. Create the `.roo` directory structure:
+   - Create a `.roo` directory in your project root
+   - Add subdirectories for each mode: `rules-orchestrator`, `rules-code`, etc.
+   - Create a `logs` directory for activity tracking
+   - Add a `memory` directory for knowledge storage
+
+6. Initialize the boomerang state:
+   - Create a `.roo/boomerang-state.json` file with an empty JSON object: `{}`
 
 #### Option 3: Direct Setup with AI Assistant
 
@@ -286,19 +306,16 @@ I want to set up the Ultimate Roo Code Hack multi-agent framework. Please help m
 Please provide the complete content for each file and instructions on how to use them.
 ```
 
-### Step 3: Configure Custom Instructions
-1. Click the "Modes" button in the Roo sidebar
-2. Scroll down to "Custom Instructions for All Modes"
-3. Copy the contents of `templates/custom-instructions-for-all-modes.md`
-4. Paste into the Custom Instructions field
-5. Click "Save"
+### Additional Configuration
 
-### Step 4: Configure Enhance Prompt (Optional)
+#### Configure Enhance Prompt (Optional)
 1. Click the "Support Prompts" button in the Roo sidebar
 2. Select "Enhance Prompt"
 3. Copy the contents of `templates/enhance-prompt-template.md`
 4. Paste into the Prompt field
 5. Click "Save"
+
+This feature helps transform basic prompts into comprehensive, structured project prompts.
 
 ## 🧩 Basic Usage
 
@@ -348,6 +365,8 @@ The Boomerang Pattern ensures reliable task delegation and tracking:
 3. Implement mode-specific logging in `.roo/logs/{new-mode}-activity.md`
 4. Update memory indexes to accommodate new artifact types
 
+> **Note**: While `.roomodes` is used for mode assignments, the `.roo` directory structure is still used for keeping notes, logs, and documenting activity and changes.
+
 ## 📊 Performance Optimization
 
 - Keep context window utilization below 40%
@@ -366,5 +385,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🙏 Acknowledgments
 
 - The SPARC framework developers
-- Contributors to the multi-agent AI research community
+- Contributors to the multi-agent AI research community (Roo Code, huge shoutout)
 - All users who provide feedback and suggestions
