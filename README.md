@@ -198,41 +198,6 @@ Below is an architectural overview of how the Roo framework operates:
 |
               Restart Recursive Loop
 ```
-
-## 📦 Quick Setup
-
-Get started quickly with our automated setup tool:
-
-```bash
-npx roo-team-setup
-```
-
-This command will:
-- Set up the entire Roo framework structure
-- Create all necessary configuration files
-- Generate mode-specific rules
-- Configure the workspace for immediate use
-
-You can choose between a full project setup or just the configuration files.
-
-## 📂 Repository Structure
-
-```
-/
-├── .roo/                     # Notes, logs, and documentation files
-├── agents/                   # Agent definitions for each mode
-│   ├── orchestrator/
-│   ├── code/
-│   └── ...
-├── framework/                # Core framework documentation
-│   ├── sparc-overview.md
-│   ├── boomerang-logic.md
-│   └── ...
-├── best-practices/           # Best practices guides
-├── implementation/           # Implementation guides
-└── templates/                # Reusable templates
-```
-
 ## 🚀 Getting Started
 
 ### Prerequisites
