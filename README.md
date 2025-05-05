@@ -1,4 +1,4 @@
-# The Ultimate Roo Code Hack
+# Building a Structured Transparent and Well Documented AI Team (In Roo Code)
 
 **Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks**
 
@@ -242,11 +242,15 @@ You can choose between a full project setup or just the configuration files.
 
 ### Installation
 
+<<<<<<< HEAD
 #### Option 1: NPM (Coming Soon)
 
 ```
 
 ```
+=======
+#### Option 1: NPM (Coming soon waiting to learn more about .roo structure and how we can inject prompts)
+>>>>>>> d4cc426e11a9eeb55e7b5162c307215a23efbc34
 
 #### Option 2: Manual Setup
 
@@ -385,5 +389,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🙏 Acknowledgments
 
 - The SPARC framework developers
+<<<<<<< HEAD
 - Contributors to the multi-agent AI research community (Roo Code, huge shoutout)
 - All users who provide feedback and suggestions
+=======
+- Contributors to the multi-agent AI research community (Shout out to Roo Code)
+- All users who provide feedback and suggestions
+>>>>>>> d4cc426e11a9eeb55e7b5162c307215a23efbc34
