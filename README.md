@@ -2,361 +2,104 @@
 
 **Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks**
 
-This repository implements a comprehensive AI workflow system based on the SPARC framework (Specification, Pseudocode, Architecture, Refinement, Completion). It creates a cohesive experience across specialized AI modes, enabling efficient task delegation, structured documentation, and knowledge preservation.
+## 🙏 Support This Work
+
+If this project helps you build better AI systems and you'd like to show your appreciation:
+
+- **Buy Me a Coffee**: [https://buymeacoffee.com/mnehmos](https://buymeacoffee.com/mnehmos)
+- **Check out Vario Research**: For advanced Deep Research alternatives (Talking about you Gemini, ChatGPT), visit [https://mnehmos.github.io/VarioResearch/](https://mnehmos.github.io/VarioResearch/) for custom reports in any format (I Prefer customized websites so i can add in API functionalities into your dashboards as needed. (Alpha Vantage, Yahoo Finance, Arxiv, google maps, etc))
 
 ## 🌟 Key Features
 
 - **Multi-Agent Framework**: Specialized modes for different types of tasks
-- **SPARC Methodology**: Structured approach to complex problem-solving
-- **Boomerang Logic**: Reliable task delegation and tracking system
-- **Memory System**: Knowledge preservation and retrieval across sessions
+- **SPARC Framework**: Structured approach to complex problem-solving
+- **Agentic Boomerang**: Reliable task delegation and tracking system
 - **Structured Documentation**: Consistent, traceable documentation
-- **Token Optimization**: Efficient resource usage through the "Scalpel, not Hammer" approach
+- **Memory Integration**: Knowledge preservation across sessions
+- **Token Optimization**: "Scalpel, not Hammer" approach for efficiency
 
-## 🧩 Specialized Modes
+## 🚀 Quick Setup Guide
 
-The system includes the following specialized modes:
+### Step 1: Meet Your AI Team
+Review the `meet-the-team.md` file to understand each team member's (mode's) specialties and when to use them.
 
-- **🪃 Orchestrator**: Task decomposition, assignment, and verification
-- **💻 Code**: Software implementation and optimization
-- **🏛️ Architect**: System design and pattern application
-- **❓ Ask**: Information retrieval, evaluation, and communication
-- **🪲 Debug**: Problem diagnosis and solution validation
-- **💾 Memory**: Knowledge storage, organization, and retrieval
-- **🔍 Deep Research**: In-depth investigation and analysis
+### Step 2: Configure Modes
+You have three options for configuring modes:
 
-## 🏗️ Architecture
+#### Option A: Edit Global Modes (For all projects)
+1. Click the "Modes" button in the Roo sidebar
+2. Select "Edit Global Modes"
+3. Copy the contents of the `.roomodes` file from this project
+4. Paste into the Global Modes editor
+5. Click "Save"
 
-Below is an architectural overview of how the Roo framework operates:
+#### Option B: Edit Project Modes (For this project only)
+1. The `.roomodes` file in this project is already configured
+2. To modify it, click the "Modes" button in the Roo sidebar
+3. Select "Edit Project Modes (.roomodes)"
+4. Make your changes
+5. Click "Save"
 
-```
-┌─────────────────────────────────┐
-│            VS Code              │
-│     (Primary Development        │
-│          Environment)           │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│             Roo Code            │
-│                ↓                │
-│          System Prompt          │
-│   (Contains SPARC Framework:    │
-│    • Specification, Pseudocode, │
-│      Architecture, Refinement,  │
-│      Completion methodology     │
-│    • Advanced reasoning models  │
-│    • Best practices enforcement │
-│    • Memory Bank integration    │
-│    • Boomerang pattern support) │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐      ┌─────────────────────────┐
-│           Orchestrator          │      │         User            │
-│     (System Prompt contains:    │      │     (Customer with      │
-│      roles, definitions,        │◄─────┤     minimal context)    │
-│      systems, processes,        │      │                         │
-│      nomenclature, etc.)        │      └─────────────────────────┘
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│        Query Processing         │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│         MCP → Reprompt          │
-│     (Only called on direct      │
-│         user input)             │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│     Structured Prompt Creation  │
-│                                 │
-│       Project Prompt Eng.       │
-│       Project Context           │
-│       System Prompt             │
-│       Role Prompt               │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│           Orchestrator          │
-│     (System Prompt contains:    │
-│      roles, definitions,        │
-│      systems, processes,        │
-│      nomenclature, etc.)        │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│         Substack Prompt         │
-│   (Generated by Orchestrator    │
-│        with structure)          │
-│                                 │
-│    ┌─────────┐  ┌─────────┐    │
-│    │  Topic  │  │ Context │    │
-│    └─────────┘  └─────────┘    │
-│                                 │
-│    ┌─────────┐  ┌─────────┐    │
-│    │  Scope  │  │ Output  │    │
-│    └─────────┘  └─────────┘    │
-│                                 │
-│    ┌─────────────────────┐     │
-│    │       Extras        │     │
-│    └─────────────────────┘     │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐   ┌────────────────────────────────────┐
-│       Specialized Modes         │   │           MCP Tools                 │
-│                                 │   │                                     │
-│  ┌────────┐ ┌────────┐ ┌─────┐ │   │ ┌─────────┐  ┌─────────────────┐   │
-│  │  Code  │ │ Debug  │ │ ... │ │──►│ │ Basic   │  │ CLI/Shell        │   │
-│  └────┬───┘ └────┬───┘ └──┬──┘ │   │ │ CRUD    │  │ (cmd/PowerShell) │   │
-│       │          │        │    │   │ └─────────┘  └─────────────────┘   │
-└───────┼──────────┼────────┼────┘   │                                     │
-        │          │        │        │ ┌─────────┐  ┌─────────────────┐   │
-        │          │        │        │ │ API     │  │ Browser          │   │
-        │          │        └───────►│ │ Calls   │  │ Automation       │   │
-        │          │                 │ │ (Alpha  │  │ (Playwright)     │   │
-        │          │                 │ │ Vantage)│  │                  │   │
-        │          │                 │ └─────────┘  └─────────────────┘   │
-        │          │                 │                                     │
-        │          └────────────────►│ ┌──────────────────────────────┐   │
-        │                            │ │        LLM Calls              │   │
-        │                            │ │                               │   │
-        │                            │ │ • Basic Queries               │   │
-        └───────────────────────────►│ │ • Reporter Format            │   │
-                                     │ │ • Logic MCP Primitives        │   │
-                                     │ │ • Sequential Thinking         │   │
-                                     │ └──────────────────────────────┘   │
-                                     └────────────────┬─────────────────┬─┘
-                                                      │                 │
-                                                      ▼                 │
-┌─────────────────────────────────────────────────────────────────┐    │
-│                   Recursive Loop                                │    │
-│                                                                 │    │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │    │
-│  │     Task Execution     │    │      Reporting        │       │    │
-│  │                        │    │                       │       │    │
-│  │ • Execute assigned task│───►│ • Report work done    │       │◄───┘
-│  │ • Solve specific issue │    │ • Share issues found  │       │
-│  │ • Maintain focus       │    │ • Provide learnings   │       │
-│  └────────────────────────┘    └─────────┬─────────────┘       │
-│                                           │                     │
-│                                           ▼                     │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │
-│  │   Task Delegation      │    │    Deliberation       │       │
-│  │                        │◄───┤                       │       │
-│  │ • Identify next steps  │    │ • Assess progress     │       │
-│  │ • Assign to best mode  │    │ • Integrate learnings │       │
-│  │ • Set clear objectives │    │ • Plan next phase     │       │
-│  └────────────────────────┘    └───────────────────────┘       │
-│                                                                 │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     Memory Mode                                  │
-│                                                                 │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │
-│  │  Project Archival      │    │   SQL Database        │       │
-│  │                        │    │                       │       │
-│  │ • Create memory folder │───►│ • Store project data  │       │
-│  │ • Extract key learnings│    │ • Index for retrieval │       │
-│  │ • Organize artifacts   │    │ • Version tracking    │       │
-│  └────────────────────────┘    └─────────┬─────────────┘       │    Feedback loop w/ User
-│                                           │                     |___________________|  USER |
-│                                           ▼                     │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │
-│  │  Memory MCP            │    │   RAG System          │       │
-│  │                        │◄───┤                       │       │
-│  │ • Database writes      │    │ • Vector embeddings   │       │
-│  │ • Data validation      │    │ • Semantic indexing   │       │
-│  │ • Structured storage   │    │ • Retrieval functions │       │
-│  └─────────────┬──────────┘    └───────────────────────┘       │
-│                │                                               │
-└────────────────┼───────────────────────────────────────────────┘
-                 │
-                 └───────────────────────────────────┐
-                                                     ▼
-┌─────────────────────────────────┐      ┌─────────────────────────┐
-│           Orchestrator          │      │         User            │
-│     (System Prompt contains:    │      │     (Customer with      │
-│      roles, definitions,        │◄─────┤     minimal context)    │
-│      systems, processes,        │      │                         │
-│      nomenclature, etc.)        │      └─────────────────────────┘
-└───────────────┬─────────────────┘
-|
-              Restart Recursive Loop
-```
-
-## 📦 Quick Setup
-
-Get started quickly with our automated setup tool:
-
-```bash
-npx roo-team-setup
-```
-
-This command will:
-- Set up the entire Roo framework structure
-- Create all necessary configuration files
-- Generate mode-specific rules
-- Configure the workspace for immediate use
-
-You can choose between a full project setup or just the configuration files.
-
-## 📂 Repository Structure
-
-```
-/
-├── .roo/                     # Configuration and runtime files
-├── agents/                   # Agent definitions for each mode
-│   ├── orchestrator/
-│   ├── code/
-│   └── ...
-├── framework/                # Core framework documentation
-│   ├── sparc-overview.md
-│   ├── boomerang-logic.md
-│   └── ...
-├── best-practices/           # Best practices guides
-├── implementation/           # Implementation guides
-└── templates/                # Reusable templates
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- A compatible AI assistant that supports custom modes
-- Basic understanding of the SPARC framework concepts
-
-### Installation
-
-#### Option 1: NPM (Recommended)
-
-```bash
-npx roo-team-setup
-```
-
-#### Option 2: Manual Setup
-
-1. Clone this repository:
-   ```
-   git clone https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team.git
-   ```
-
-2. Ensure the `.roomodes` file is in your project root
-
-3. Configure your AI assistant to use the custom modes
-
-#### Option 3: Direct Setup with AI Assistant
-
+#### Option C: Direct Setup with AI Assistant
 If you prefer to set up the framework directly using an AI assistant like Roo, Claude, or ChatGPT, you can copy and paste the following prompt:
 
 ```
-I need to set up a Roo multi-agent framework in my project. Please create the following directory structure and necessary files for me:
+I want to set up the Ultimate Roo Code Hack multi-agent framework. Please help me:
 
-1. Create a .roo/ directory with the following subdirectories:
-   - rules/ (for general rules)
-   - rules-orchestrator/ (for orchestrator mode rules)
-   - rules-code/ (for code mode rules)
-   - rules-architect/ (for architect mode rules)
-   - rules-ask/ (for ask mode rules)
-   - rules-debug/ (for debug mode rules)
-   - rules-memory/ (for memory mode rules)
-   - rules-deep-research-agent/ (for deep research mode rules)
-   - logs/ (for storing logs from different modes)
+1. Create a .roomodes file with configurations for these specialized modes:
+   - Orchestrator (task management and delegation)
+   - Code (software implementation)
+   - Architect (system design)
+   - Ask (information discovery)
+   - Debug (problem diagnosis)
+   - Memory (knowledge management)
+   - Deep Research (in-depth investigation)
 
-2. Create a .roomodes file in the project root with mode definitions for:
-   - 🪃 Orchestrator mode
-   - 💻 Code mode
-   - 🏛️ Architect mode
-   - ❓ Ask mode
-   - 🪲 Debug mode
-   - 💾 Memory mode
-   - 🔍 Deep Research mode
+2. Create a meet-the-team.md file that describes each mode as a team member in plain English
 
-3. Create agent definition directories under agents/:
-   - orchestrator/
-   - code/
-   - architect/
-   - ask/
-   - debug/
-   - memory/
-   - research/ (for deep research mode)
+3. Set up custom instructions that implement:
+   - The SPARC framework for structured reasoning
+   - Boomerang logic for task delegation
+   - Token optimization strategies
+   - Standardized documentation formats
 
-4. Create a framework/ directory for documentation of the SPARC framework:
-   - boomerang-logic.md
-   - cognitive-processes.md
-   - sparc-overview.md
-   - structured-documentation.md
-
-5. Create a best-practices/ directory with:
-   - token-optimization.md
-
-6. Create a templates/ directory with:
-   - templates/task-prompts/standard-task-template.md
-
-Each file should have appropriate content describing its purpose, and the rule files should contain the necessary instructions for each mode to function properly within the SPARC framework.
-
-Please make sure all files follow the proper formatting and include explanations of how each component works within the overall framework.
+Please provide the complete content for each file and instructions on how to use them.
 ```
 
-After pasting this prompt, your AI assistant will guide you through creating the necessary files and directories for the Roo framework.
+### Step 3: Configure Custom Instructions
+1. Click the "Modes" button in the Roo sidebar
+2. Scroll down to "Custom Instructions for All Modes"
+3. Copy the contents of `templates/custom-instructions-for-all-modes.md`
+4. Paste into the Custom Instructions field
+5. Click "Save"
 
-### Basic Usage
+### Step 4: Configure Enhance Prompt (Optional)
+1. Click the "Support Prompts" button in the Roo sidebar
+2. Select "Enhance Prompt"
+3. Copy the contents of `templates/enhance-prompt-template.md`
+4. Paste into the Prompt field
+5. Click "Save"
 
-1. **Start with the Orchestrator**: Begin by engaging the Orchestrator mode to plan your task
-   ```
-   /mode orchestrator
-   ```
+## 🧩 Basic Usage
 
-2. **Let the Orchestrator delegate**: The Orchestrator will break down complex tasks and assign them to specialist modes
+1. **Start with Orchestrator Mode** - This is your project manager who will coordinate everything
+2. **Describe your project** - Be as detailed as possible in your initial prompt
+3. **Let Orchestrator break it down** - It will create subtasks and delegate to specialist modes
+4. **Review the results** - Orchestrator will integrate all the pieces and present the final result
 
-3. **Review completed work**: The Orchestrator will verify and integrate completed subtasks
+## 🧩 Using the Modes
 
-4. **Access stored knowledge**: Use the Memory mode to retrieve information from previous sessions
+### Switching Modes
+1. Click on the current mode name in the bottom left corner of the Roo interface
+2. Select the desired mode from the dropdown menu
 
-## 📚 Framework Components
-
-### SPARC Framework
-
-The SPARC Framework consists of four key components:
-
-1. **Cognitive Process Library**: Reusable reasoning patterns for different types of tasks
-2. **Boomerang Logic**: Task delegation and return system
-3. **Structured Documentation**: Standardized documentation approach
-4. **"Scalpel, not Hammer" Philosophy**: Efficient resource usage
-
-### Boomerang Logic
-
-The Boomerang Logic system ensures reliable task tracking:
-
-1. Tasks originate from the Orchestrator
-2. Specialist modes process assigned tasks
-3. Completed tasks return to the Orchestrator
-4. The Orchestrator verifies and integrates results
-
-### Memory System
-
-The Memory system preserves knowledge across sessions:
-
-1. Project-specific artifacts, decisions, and learnings
-2. Cross-project knowledge and patterns
-3. Session and environmental context
-4. Retrieval indexes for efficient access
-
-## 🛠️ Advanced Usage
+### Using the Enhance Prompt Feature
+1. Type your basic prompt in the chat
+2. Click the ✨ button next to the send button
+3. Roo will transform your basic prompt into a comprehensive, structured project prompt
 
 ### Creating Custom Tasks
-
-Use the standardized task prompt format:
+When creating tasks for specialist modes, use the standardized task prompt format:
 
 ```markdown
 # [Task Title]
@@ -374,32 +117,69 @@ Use the standardized task prompt format:
 [Relevant tips, examples, or reference materials]
 ```
 
-### Extending the Framework
+This structured format ensures that specialist modes have all the information they need to complete tasks effectively and consistently.
 
-To extend the framework:
+## 🔄 The Boomerang Pattern
 
-1. Add new modes by updating `config.json` and `.roomodes`
-2. Create corresponding rule files in `.roo/rules-{new-mode}/rules.md`
-3. Implement mode-specific logging in `.roo/logs/{new-mode}-activity.md`
-4. Update memory indexes to accommodate new artifact types
+The Boomerang Pattern ensures reliable task delegation and tracking:
 
-## 📊 Performance Optimization
+1. **Orchestrator** breaks down complex tasks into subtasks
+2. **Orchestrator** assigns each subtask to a specialist mode using the `new_task` tool (NEVER `switch_mode`)
+3. **Specialist Mode** completes the assigned task
+4. **Specialist Mode** returns results to the Orchestrator
+5. **Orchestrator** verifies and integrates the results
 
-- Keep context window utilization below 40%
-- Start with the least token-intensive cognitive primitives
-- Break complex tasks into atomic components
-- Use the most specialized mode for each subtask
+## 📊 Token Optimization & Best Practices
 
-## 🤝 Contributing
+Follow these principles to optimize token usage and ensure project success:
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. **Comprehensive Initial Planning**:
+   - Make initial prompts as detailed as possible
+   - Include all required features in the first build
+   - Establish complete scaffolding before implementation
+   - Avoid adding new core functionalities later (leads to context issues)
 
-## 📄 License
+2. **Resource Management**:
+   - Keep context window utilization below 40%
+   - Start with minimal context and add only what's needed
+   - Clear unnecessary context when switching tasks
+   - Break complex tasks into atomic components
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+3. **Quality Control**:
+   - Set temperature to 0 for coding projects to ensure consistency
+   - Maintain human-in-the-loop oversight for critical decisions
+   - Monitor implementation to ensure requirements are met correctly
+   - Minimize rework, as code refactoring can confuse even advanced models
 
-## 🙏 Acknowledgments
+4. **Model Selection**:
+   - Use Claude 3.7 (recommended) for complex coding projects
+   - Ideal for full-stack websites, basic Tauri applications, etc.
+   - Provides best balance of context understanding and code generation
 
-- The SPARC framework developers
-- Contributors to the multi-agent AI research community
-- All users who provide feedback and suggestions
+## 🤝 Getting Help
+
+If you encounter any issues or have questions, you can:
+
+1. Ask the Orchestrator to diagnose and resolve the problem
+2. Review the mode definitions in the `.roomodes` file
+3. Visit the GitHub repository for updates and community support
+
+---
+
+## 📋 File Structure
+
+- **meet-the-team.md**: Descriptions of each AI team member (mode) in plain English
+- **.roomodes**: The primary configuration file for all modes
+- **templates/**: Contains templates for custom instructions and enhance prompt
+  - **custom-instructions-for-all-modes.md**: Template for global instructions
+  - **enhance-prompt-template.md**: Template for the enhance prompt feature
+
+## 🔑 Important Notes
+
+- The `.roomodes` file in your local repo will override global settings
+- The older `.roo` directory structure is being deprecated
+- Always use the `.roomodes` file for mode management and integration
+
+## 📚 Advanced Mode Creation
+
+For a detailed guide on creating custom modes, including system consistency and best practices, see the [detailed-mode-creation-guide.md](detailed-mode-creation-guide.md) file.
