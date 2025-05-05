@@ -389,10 +389,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🙏 Acknowledgments
 
 - The SPARC framework developers
-<<<<<<< HEAD
 - Contributors to the multi-agent AI research community (Roo Code, huge shoutout)
 - All users who provide feedback and suggestions
-=======
-- Contributors to the multi-agent AI research community (Shout out to Roo Code)
-- All users who provide feedback and suggestions
->>>>>>> d4cc426e11a9eeb55e7b5162c307215a23efbc34
