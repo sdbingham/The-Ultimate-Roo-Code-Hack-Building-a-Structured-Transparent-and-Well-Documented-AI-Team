@@ -242,15 +242,12 @@ You can choose between a full project setup or just the configuration files.
 
 ### Installation
 
-<<<<<<< HEAD
 #### Option 1: NPM (Coming Soon)
 
 ```
 
 ```
 =======
-#### Option 1: NPM (Coming soon waiting to learn more about .roo structure and how we can inject prompts)
->>>>>>> d4cc426e11a9eeb55e7b5162c307215a23efbc34
 
 #### Option 2: Manual Setup
 
