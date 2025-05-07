@@ -1,0 +1,37 @@
+{
+  "name": "@sdbingham/roo-framework",
+  "version": "1.0.0",
+  "description": "Structured, Transparent, and Well-Documented AI Team Framework",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node scripts/setup.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdbingham/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team.git"
+  },
+  "keywords": ["roo", "ai", "framework", "multi-agent"],
+  "author": "Your Name",
+  "contributors": [
+    {
+      "name": "Mnehmos",
+      "url": "https://github.com/Mnehmos"
+    }
+  ],
+  "homepage": "https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "index.js",
+    "scripts/",
+    ".roomodes",
+    "templates/",
+    "README.md",
+    "detailed-mode-creation-guide.md",
+    "meet-the-team.md",
+    "roo-framework-architecture.md",
+    "LICENSE"
+  ]
+}
