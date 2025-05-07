@@ -41,14 +41,32 @@ The framework includes the following specialized modes:
 
 ### Setup Authentication
 
-Create or edit `~/.npmrc` to include your GitHub authentication:
+1. Create a GitHub Personal Access Token (PAT) with the `read:packages` scope
 
-```
-//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
-@yourusername:registry=https://npm.pkg.github.com
-```
+2. Copy the included `.npmrc.template` file to your home directory as `~/.npmrc`:
 
-Replace `YOUR_GITHUB_TOKEN` with your GitHub PAT and `yourusername` with your GitHub username.
+   ```bash
+   # Copy and rename the template
+   cp node_modules/@yourusername/roo-framework/.npmrc.template ~/.npmrc
+   
+   # Edit the file with your information
+   nano ~/.npmrc
+   ```
+
+3. Edit the file to include your GitHub authentication:
+
+   ```
+   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_PAT
+   @yourusername:registry=https://npm.pkg.github.com
+   ```
+
+   Replace `YOUR_GITHUB_PAT` with your GitHub Personal Access Token and `yourusername` with your GitHub username.
+
+4. (Optional) For project-specific configuration, create a `.npmrc` file in your project root:
+
+   ```
+   @yourusername:registry=https://npm.pkg.github.com
+   ```
 
 ### Install the Package
 

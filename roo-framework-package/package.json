@@ -32,6 +32,7 @@
     "detailed-mode-creation-guide.md",
     "meet-the-team.md",
     "roo-framework-architecture.md",
-    "LICENSE"
+    "LICENSE",
+    ".npmrc.template"
   ]
 }

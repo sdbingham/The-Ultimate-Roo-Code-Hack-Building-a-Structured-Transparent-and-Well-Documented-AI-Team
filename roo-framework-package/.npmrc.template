@@ -1,0 +1,9 @@
+# GitHub Packages Authentication
+//npm.pkg.github.com/:_authToken=YOUR_GITHUB_PAT
+
+# Registry Configuration for Scopes
+@yourusername:registry=https://npm.pkg.github.com
+
+# Replace:
+# - YOUR_GITHUB_PAT with your GitHub Personal Access Token with read:packages scope
+# - yourusername with your GitHub username if you're publishing your own version
