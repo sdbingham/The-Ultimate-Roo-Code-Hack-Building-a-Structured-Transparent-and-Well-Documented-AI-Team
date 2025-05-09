@@ -1,0 +1,86 @@
+{
+  "assets": [
+    {
+      "id": "concept-d399dcfe",
+      "type": "concept",
+      "name": "Semantic Search",
+      "created": "2025-05-09T02:22:05.038Z",
+      "updated": "2025-05-09T02:22:05.038Z",
+      "tags": [
+        "search",
+        "semantic",
+        "nlp"
+      ],
+      "path": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\assets\\concepts\\concept-d399dcfe.md",
+      "embeddingPath": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\embeddings\\concept-d399dcfe.json",
+      "version": 1
+    },
+    {
+      "id": "concept-dc3c1cca",
+      "type": "concept",
+      "name": "Vector Embeddings",
+      "created": "2025-05-09T02:22:05.055Z",
+      "updated": "2025-05-09T02:22:05.055Z",
+      "tags": [
+        "vector",
+        "embedding",
+        "nlp"
+      ],
+      "path": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\assets\\concepts\\concept-dc3c1cca.md",
+      "embeddingPath": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\embeddings\\concept-dc3c1cca.json",
+      "version": 1
+    },
+    {
+      "id": "concept-9c870a24",
+      "type": "concept",
+      "name": "Knowledge Graph",
+      "created": "2025-05-09T02:22:05.058Z",
+      "updated": "2025-05-09T02:22:05.058Z",
+      "tags": [
+        "graph",
+        "knowledge",
+        "relationships"
+      ],
+      "path": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\assets\\concepts\\concept-9c870a24.md",
+      "embeddingPath": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\embeddings\\concept-9c870a24.json",
+      "version": 1
+    },
+    {
+      "id": "concept-7bae17a0",
+      "type": "concept",
+      "name": "Sample Concept",
+      "created": "2025-05-09T02:22:30.530Z",
+      "updated": "2025-05-09T02:22:30.530Z",
+      "tags": [
+        "sample",
+        "cli",
+        "concept"
+      ],
+      "path": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\assets\\concepts\\concept-7bae17a0.md",
+      "embeddingPath": "c:\\Users\\sean\\Projects\\GitHub\\The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team\\roo-framework-package\\.roo\\memory\\embeddings\\concept-7bae17a0.json",
+      "version": 1
+    }
+  ],
+  "lastUpdated": "2025-05-09T02:22:35.504Z",
+  "version": "2.0.0",
+  "relationships": [
+    {
+      "id": "afc163b8-957e-41e5-ac12-ee8916754631",
+      "sourceId": "concept-d399dcfe",
+      "targetId": "concept-dc3c1cca",
+      "type": "related_to",
+      "description": "Test relationship",
+      "created": "2025-05-09T02:22:05.073Z",
+      "updated": "2025-05-09T02:22:05.073Z"
+    },
+    {
+      "id": "63188216-031a-4342-968a-dbaccf07af01",
+      "sourceId": "concept-7bae17a0",
+      "targetId": "concept-9c870a24",
+      "type": "related_to",
+      "description": "Created via CLI on 2025-05-09T02:22:35.500Z",
+      "created": "2025-05-09T02:22:35.502Z",
+      "updated": "2025-05-09T02:22:35.502Z"
+    }
+  ]
+}

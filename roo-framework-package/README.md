@@ -1,206 +1,379 @@
-# Roo Multi-Agent Framework Package
+# Roo Framework
 
-A packaged version of the Structured, Transparent, and Well-Documented AI Team Framework for Roo.
+A structured, transparent, and well-documented AI team framework for managing multi-agent workflows.
 
-## Overview
+![Roo Framework](https://img.shields.io/badge/Roo-Framework-blue)
+![Version](https://img.shields.io/badge/Version-4.2.5-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-This package provides a streamlined way to incorporate the Roo Multi-Agent Framework into your projects. It includes:
+## What is the Roo Framework?
 
-- Specialized mode definitions
-- Custom instructions for all modes
-- Directory structure for organizing project artifacts
-- Documentation and templates
+The Roo Framework is a comprehensive system for organizing and managing AI agent workflows. It provides a structured approach to:
+
+- **Mode Management**: Define specialized AI agent modes with specific capabilities and permissions
+- **Memory Management**: Store and retrieve knowledge across agent interactions using official database clients
+- **Boomerang Task Management**: Track tasks as they move between different agent modes
+- **Standardized Documentation**: Maintain consistent documentation across your AI team
 
 ## Features
 
-- **Multi-Agent Framework**: Specialized modes for different types of tasks
-- **SPARC Framework**: Structured approach to complex problem-solving
-- **Agentic Boomerang**: Reliable task delegation and tracking system
-- **Structured Documentation**: Consistent, traceable documentation
-- **Token Optimization**: Efficient resource usage through the "Scalpel, not Hammer" approach
+- **Mode System**: Define custom modes with specific roles, permissions, and instructions
+- **Memory System**: Store and retrieve knowledge assets using industry-standard databases
+- **Boomerang System**: Track tasks as they transition between different modes
+- **CLI Interface**: Manage your AI team through an easy-to-use command line interface
+- **Directory Structure**: Organized file structure for all AI team artifacts
 
-## Specialized Modes
+## Advanced Memory Features
 
-The framework includes the following specialized modes:
+The Roo Framework includes powerful memory management capabilities through official client libraries for industry-standard databases:
 
-- **🪃 Orchestrator**: Task decomposition, assignment, and verification
-- **💻 Code**: Software implementation and optimization
-- **🏛️ Architect**: System design and pattern application
-- **❓ Ask**: Information retrieval, evaluation, and communication
-- **🪲 Debug**: Problem diagnosis and solution validation
-- **💾 Memory**: Knowledge storage, organization, and retrieval
-- **🔍 Deep Research**: In-depth investigation and analysis
+### Weaviate (Primary Knowledge Base)
+
+Serves as the primary knowledge base for Memory Mode:
+- Combined vector search and data storage
+- Schema-based data modeling
+- Automatic vectorization of content
+- Cross-references between objects
+
+### Neo4j (Graph Database)
+
+Manages relationships between memory assets:
+- Native graph database for complex relationship modeling
+- Cypher query language for traversing relationships
+- Support for various relationship types and properties
+- Bidirectional traversal (incoming and outgoing relationships)
+
+### MongoDB (Document Database)
+
+Provides flexible document storage:
+- Schema-less document storage for memory assets
+- Rich querying capabilities
+- Efficient indexing for fast retrieval
+- Backup storage for redundancy
+
+### Chroma (Vector Database)
+
+Enables advanced semantic search:
+- Specialized vector database for embeddings
+- Nearest neighbor search algorithms
+- Filtering and metadata-based search
+- Optimized for semantic similarity operations
 
 ## Installation
 
-### Prerequisites
-
-- Node.js and npm
-- GitHub account with a Personal Access Token (PAT) with `read:packages` scope
-- VS Code with the Roo extension
-
-### Setup Authentication
-
-1. Create a GitHub Personal Access Token (PAT) with the `read:packages` scope
-
-2. Copy the included `.npmrc.template` file to your home directory as `~/.npmrc`:
-
-   ```bash
-   # Copy and rename the template
-   cp node_modules/@yourusername/roo-framework/.npmrc.template ~/.npmrc
-   
-   # Edit the file with your information
-   nano ~/.npmrc
-   ```
-
-3. Edit the file to include your GitHub authentication:
-
-   ```
-   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_PAT
-   @yourusername:registry=https://npm.pkg.github.com
-   ```
-
-   Replace `YOUR_GITHUB_PAT` with your GitHub Personal Access Token and `yourusername` with your GitHub username.
-
-4. (Optional) For project-specific configuration, create a `.npmrc` file in your project root:
-
-   ```
-   @yourusername:registry=https://npm.pkg.github.com
-   ```
-
-### Install the Package
+### Installation Command
 
 ```bash
-# Install as a dev dependency
-npm install --save-dev @yourusername/roo-framework
+npm install --save-dev @sdbingham/roo-framework
 ```
 
-The package's postinstall script will automatically:
-- Copy the `.roomodes` file to your project root
-- Create the `.roo` directory structure
-- Initialize the boomerang state file
+This package includes all required dependencies for the Roo Framework.
 
-## Usage
+For GitHub Packages, use:
 
-### Configure VS Code
+```bash
+npm install --save-dev @sdbingham/roo-framework --registry=https://npm.pkg.github.com
+```
 
-1. Open VS Code settings
-2. Navigate to the Roo extension settings
-3. Set up custom instructions for all modes:
+Make sure you have authenticated with GitHub Packages first:
+
+```bash
+npm login --registry=https://npm.pkg.github.com
+```
+
+For detailed installation instructions, troubleshooting, and configuration options, see the [Installation Guide](./INSTALLATION.md).
+
+### Setup
+
+After installing the package, you need to run the setup script to create the necessary files and directories:
+
+```bash
+npx roo-framework setup
+```
+
+This setup script will:
+1. Create the `.roomodes` file in your project root
+2. Set up the `.roo` directory structure
+3. Initialize all required files with the correct content
+
+The setup script will guide you through the process and confirm the project root directory before creating any files.
+
+### Importing in Your Code
+
+After setup, you can import the framework in your code:
 
 ```javascript
-// Get custom instructions from the package
-const rooFramework = require('@yourusername/roo-framework');
-const customInstructions = rooFramework.getCustomInstructions();
-
-// Copy these instructions into the VS Code Roo extension settings
+const rooFramework = require('@sdbingham/roo-framework');
 ```
-
-### Basic Workflow
-
-1. **Start with Orchestrator Mode** - This is your project manager who will coordinate everything
-2. **Describe your project** - Be as detailed as possible in your initial prompt
-3. **Let Orchestrator break it down** - It will create subtasks and delegate to specialist modes
-4. **Review the results** - Orchestrator will integrate all the pieces and present the final result
-
-### Switching Modes
-
-1. Click on the current mode name in the bottom left corner of the Roo interface
-2. Select the desired mode from the dropdown menu
-
-### Using the Enhance Prompt Feature
-
-Access the enhance prompt template:
-
-```javascript
-const rooFramework = require('@yourusername/roo-framework');
-const enhancePromptTemplate = rooFramework.getEnhancePromptTemplate();
-```
-
-Use this template to transform basic prompts into comprehensive, structured project prompts.
 
 ## Directory Structure
 
-The framework creates the following directory structure in your project:
+The Roo Framework creates the following directory structure in your project:
 
 ```
-your-project/
-├── .roomodes                      # Mode definitions
-├── .roo/                          # Process documentation
-│   ├── logs/                      # Activity logs by mode
-│   │   ├── orchestrator/          # Orchestration decisions
-│   │   ├── code/                  # Code implementation logs
-│   │   └── [other_modes]/         # Mode-specific logs
-│   ├── boomerang-state.json       # Task tracking
-│   └── memory/                    # Knowledge storage
-└── [your project files]
+.roomodes                      # Mode definitions file
+.roo/                          # Root directory for all Roo Framework files
+├── logs/                      # Activity logs
+│   ├── orchestrator/          # Orchestrator mode logs
+│   ├── code/                  # Code mode logs
+│   ├── architect/             # Architect mode logs
+│   ├── ask/                   # Ask mode logs
+│   ├── debug/                 # Debug mode logs
+│   ├── memory/                # Memory mode logs
+│   └── deep-research/         # Deep Research mode logs
+├── memory/                    # Memory system
+│   ├── indices/               # Memory indices
+│   └── assets/                # Memory assets
+└── boomerang-state.json       # Boomerang task state
 ```
 
-## Documentation Access
+## User Guide
 
-Access the framework documentation programmatically:
+### CLI Interface
 
-```javascript
-const rooFramework = require('@yourusername/roo-framework');
-
-// Get path to a specific documentation file
-const readmePath = rooFramework.getDocumentationPath('README.md');
-
-// Read documentation content
-const meetTheTeam = rooFramework.readDocumentation('meet-the-team.md');
-```
-
-## Updating
-
-When a new version of the package is released, update with:
+The Roo Framework provides a command-line interface for easy interaction:
 
 ```bash
-npm update @yourusername/roo-framework
+npx roo-framework <command> [options]
 ```
 
-## Customization
+#### Available Commands
 
-You can customize the framework by:
+- `setup`: Set up the Roo Framework
+- `verify`: Verify the Roo Framework installation
+- `memory <subcommand>`: Memory management commands
+- `boomerang <subcommand>`: Boomerang task management commands
+- `mode <subcommand>`: Mode management commands
+- `help`: Show help information
+- `version`: Show version information
 
-1. Modifying the `.roomodes` file to adjust mode definitions
-2. Editing the custom instructions in VS Code settings
-3. Creating your own templates based on the framework's examples
+### Mode Management
+
+Modes define specialized AI agent roles with specific capabilities and permissions.
+
+#### Listing Available Modes
+
+```bash
+npx roo-framework mode list
+```
+
+#### Getting Mode Information
+
+```bash
+npx roo-framework mode info <slug>
+```
+
+Example:
+```bash
+npx roo-framework mode info code
+```
+
+### Memory Management
+
+The memory system allows storing and retrieving knowledge across agent interactions using official client libraries for industry-standard databases.
+
+#### Listing Memory Assets
+
+```bash
+npx roo-framework memory list
+```
+
+#### Creating a Memory Asset
+
+```bash
+npx roo-framework memory create
+```
+
+This creates a new memory asset with the specified type, name, content, and tags.
+
+#### Getting a Memory Asset
+
+```bash
+npx roo-framework memory get <id>
+```
+
+Retrieves a specific memory asset by its ID, showing both metadata and content.
+
+#### Searching Memory Assets
+
+```bash
+npx roo-framework memory search <query>
+```
+
+Performs a semantic search across all memory assets, returning results ranked by relevance.
+
+#### Creating Relationships (Knowledge Graph)
+
+```bash
+npx roo-framework memory relate <sourceId> <targetId> <type>
+```
+
+Creates a relationship between two memory assets, building a knowledge graph. Supported relationship types include:
+- related_to
+- depends_on
+- implements
+- extends
+- references
+- supersedes
+- contradicts
+- derived_from
+
+#### Viewing Relationships
+
+```bash
+npx roo-framework memory relationships <id>
+```
+
+Shows all relationships (both incoming and outgoing) for a specific memory asset.
+
+### Boomerang Task Management
+
+The boomerang system tracks tasks as they transition between different modes.
+
+#### Listing Boomerang Tasks
+
+```bash
+npx roo-framework boomerang list
+```
+
+#### Creating a Boomerang Task
+
+```bash
+npx roo-framework boomerang create
+```
+Note: This feature is planned for future implementation.
+
+#### Getting Task Status
+
+```bash
+npx roo-framework boomerang status <id>
+```
+Note: This feature is planned for future implementation.
+
+#### Updating a Task
+
+```bash
+npx roo-framework boomerang update <id>
+```
+Note: This feature is planned for future implementation.
 
 ## Troubleshooting
 
-### Mode Configuration Issues
+### Troubleshooting
 
-If modes aren't appearing correctly:
-1. Verify that the `.roomodes` file exists in your project root
-2. Check that the file has the correct format and content
-3. Restart VS Code to apply changes
-
-### Directory Structure Issues
-
-If the `.roo` directory structure wasn't created properly:
-1. Run the setup script manually:
+If you encounter any issues during setup, you can use the diagnostic tools included with the package:
 
 ```bash
-node node_modules/@yourusername/roo-framework/scripts/setup.js
+# Run the diagnostic script to identify project root issues
+npx roo-framework diagnose
+
+# Verify the framework installation
+npx roo-framework verify
 ```
 
-### Authentication Issues
+Common issues and solutions:
 
-If you can't install the package:
-1. Ensure your PAT has the correct permissions
-2. Verify your `.npmrc` file is correctly configured
-3. Check that you're authenticated with GitHub Packages
+1. **Wrong project root detected**: The setup script will ask you to confirm the project root directory. If it's incorrect, you can specify the correct path.
+
+2. **Permission issues**: Make sure you have write permissions to the project directory.
+
+3. **Missing files after setup**: Run `npx roo-framework verify` to check which files are missing, then run the setup script again.
+
+### Verifying Installation
+
+You can verify that all required files exist in your project root:
+
+```bash
+npx roo-framework verify
+```
+
+This will check if all required files exist and show any missing files.
+
+### Accessing Roo Directory
+
+You can access the Roo directory programmatically:
+
+```javascript
+const rooFramework = require('@sdbingham/roo-framework');
+const rooDirectory = rooFramework.getRooDirectory();
+console.log(`Roo directory is located at: ${rooDirectory}`);
+```
+
+### CLI Commands Not Working
+
+If CLI commands aren't working, verify that the framework is set up correctly:
+
+```bash
+npx roo-framework verify
+```
+
+## API Reference
+
+The Roo Framework provides a JavaScript API for programmatic access:
+
+### Core API
+
+```javascript
+const rooFramework = require('@sdbingham/roo-framework');
+
+// Get project root
+const projectRoot = rooFramework.getProjectRoot();
+
+// Get boomerang state
+const boomerangState = rooFramework.getBoomerangState();
+
+// Update boomerang state
+rooFramework.updateBoomerangState(newState);
+
+// Log mode activity
+rooFramework.logModeActivity('code', 'Implemented new feature');
+
+// Verify setup
+const setupStatus = rooFramework.verifySetup();
+```
+
+### Memory API
+
+```javascript
+const memory = require('@sdbingham/roo-framework').memory;
+
+// Create a memory asset
+const asset = memory.createMemoryAsset({
+  type: 'concept',
+  name: 'Semantic Search',
+  content: 'Semantic search is a data searching technique...',
+  tags: ['search', 'semantic', 'nlp']
+});
+
+// List all memory assets
+const assets = memory.listMemoryAssets();
+
+// Get a specific memory asset
+const asset = memory.getMemoryAsset('concept-123456');
+
+// Search memory assets
+const results = memory.searchMemoryAssets('semantic', {
+  useSemanticSearch: true
+});
+
+// Create a relationship between assets
+const relationship = memory.createRelationship({
+  sourceId: 'concept-123456',
+  targetId: 'concept-789012',
+  type: memory.RELATIONSHIP_TYPES.RELATED_TO,
+  description: 'These concepts are related'
+});
+
+// Get relationships for an asset
+const relationships = memory.getAssetRelationships('concept-123456', {
+  direction: 'both'
+});
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This package is based on the original Roo Multi-Agent Framework created by [Mnehmos](https://github.com/Mnehmos), which is licensed under the MIT License.
-
-## Acknowledgments
-
-- [Mnehmos](https://github.com/Mnehmos) - Creator of the original [Roo Multi-Agent Framework](https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team)
-- Contributors to the multi-agent AI research community
-- The Roo Code team
-
-If this package helps you build better AI systems, consider supporting the original creator:
-- [Buy Me a Coffee](https://buymeacoffee.com/mnehmos)
-- [Vario Research](https://mnehmos.github.io/VarioResearch/) for custom research reports
+This project is licensed under the MIT License - see the LICENSE file for details.

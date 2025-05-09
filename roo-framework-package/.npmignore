@@ -1,0 +1,59 @@
+# Development files
+.git/
+.github/
+.vscode/
+node_modules/
+test/
+*.test.js
+coverage/
+
+# Build artifacts
+.nyc_output/
+.cache/
+build/
+dist/
+
+# Configuration files
+.eslintrc
+.prettierrc
+.travis.yml
+.gitlab-ci.yml
+tsconfig.json
+webpack.config.js
+.npmignore
+
+# Documentation files not needed for runtime
+docs/development/
+docs/internal/
+
+# Temporary files
+.DS_Store
+*.log
+*.tmp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Large files not needed for runtime
+examples/large-data/
+
+# Source maps
+*.map
+
+# Editor-specific files
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.*
+
+# Backup files
+*.bak
+*~
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

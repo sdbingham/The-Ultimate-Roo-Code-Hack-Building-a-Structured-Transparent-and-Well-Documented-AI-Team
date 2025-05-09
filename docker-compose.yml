@@ -1,0 +1,39 @@
+services:
+  weaviate:
+    image: semitechnologies/weaviate:1.19.6
+    ports:
+      - "8080:8080"
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_HOSTNAME: 'node1'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+
+  neo4j:
+    image: neo4j:5.9.0
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/password
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:0.4.15
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+
+volumes:
+  weaviate_data:
+  neo4j_data:
+  mongodb_data:
+  chroma_data:

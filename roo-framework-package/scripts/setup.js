@@ -1,46 +1,270 @@
-// scripts/setup.js
+#!/usr/bin/env node
+
+/**
+ * Roo Framework Setup Script
+ *
+ * This script sets up the necessary directory structure and configuration files
+ * for the Roo Framework in the user's project.
+ *
+ * It performs a complete setup:
+ * 1. Creates all required files and directories
+ * 2. Sets up boomerang state tracking
+ */
+
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
+const { exec } = require('child_process');
+const rooFramework = require('../index');
 
-// Determine the project root (2 levels up from node_modules/@yourusername/roo-framework/scripts)
-const projectRoot = path.resolve(__dirname, '..', '..', '..', '..');
+// ANSI color codes for console output
+const colors = {
+  reset: '\x1b[0m',
+  bright: '\x1b[1m',
+  dim: '\x1b[2m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  red: '\x1b[31m',
+  cyan: '\x1b[36m',
+  magenta: '\x1b[35m'
+};
 
-// Copy .roomodes to project root if it doesn't exist
-const roomodesSource = path.join(__dirname, '..', '.roomodes');
-const roomodesTarget = path.join(projectRoot, '.roomodes');
+// Print banner
+console.log(`
+${colors.bright}${colors.blue}╔══════════════════════════════════════════════════════════╗
+║                                                          ║
+║  ${colors.cyan}Roo Framework Setup${colors.blue}                                   ║
+║  ${colors.dim}Structured, Transparent, and Well-Documented AI Team${colors.blue}  ║
+║                                                          ║
+╚══════════════════════════════════════════════════════════╝${colors.reset}
+`);
 
-if (!fs.existsSync(roomodesTarget)) {
-  fs.copyFileSync(roomodesSource, roomodesTarget);
-  console.log('Created .roomodes file in project root');
-}
+// Create readline interface for user input
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-// Create .roo directory structure
-const directories = [
-  '.roo',
-  '.roo/logs',
-  '.roo/logs/orchestrator',
-  '.roo/logs/code',
-  '.roo/logs/architect',
-  '.roo/logs/ask',
-  '.roo/logs/debug',
-  '.roo/logs/memory',
-  '.roo/logs/deep-research',
-  '.roo/memory'
-];
+// Default to current working directory
+let projectRoot = process.cwd();
 
-directories.forEach(dir => {
-  const dirPath = path.join(projectRoot, dir);
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-    console.log(`Created directory: ${dir}`);
+// Ask user to confirm project root
+console.log(`${colors.bright}Project Root Detection:${colors.reset}`);
+console.log(`Detected current directory: ${projectRoot}`);
+
+// Ask user to confirm or change project root
+rl.question(`${colors.yellow}Is this the correct project root? (Y/n) ${colors.reset}`, (answer) => {
+  if (answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no') {
+    rl.question(`${colors.yellow}Please enter the full path to your project root: ${colors.reset}`, (customPath) => {
+      projectRoot = customPath.trim();
+      console.log(`${colors.green}Using custom project root: ${projectRoot}${colors.reset}`);
+      setupRooFramework(projectRoot);
+    });
+  } else {
+    console.log(`${colors.green}Using current directory as project root${colors.reset}`);
+    setupRooFramework(projectRoot);
   }
 });
 
-// Create boomerang state file if it doesn't exist
-const boomerangPath = path.join(projectRoot, '.roo', 'boomerang-state.json');
-if (!fs.existsSync(boomerangPath)) {
-  fs.writeFileSync(boomerangPath, '{}');
-  console.log('Created boomerang-state.json file');
+// Setup function with error handling
+function setupRooFramework(projectRoot) {
+  try {
+    console.log(`\n${colors.bright}Setting up Roo Framework in: ${projectRoot}${colors.reset}\n`);
+    
+    // Verify we have write permissions to the project root
+    try {
+      const testFile = path.join(projectRoot, '.roo-test-permissions');
+      fs.writeFileSync(testFile, 'test');
+      fs.unlinkSync(testFile);
+      console.log(`${colors.green}✓ Verified write permissions to project root${colors.reset}`);
+    } catch (permError) {
+      console.error(`${colors.red}❌ Error: No write permissions to project root ${projectRoot}${colors.reset}`);
+      console.error(`${colors.red}Please run this script with appropriate permissions or choose a different directory.${colors.reset}`);
+      rl.close();
+      process.exit(1);
+    }
+
+    // Copy .roomodes to project root if it doesn't exist
+    const roomodesSource = path.join(__dirname, '..', '.roomodes');
+    const roomodesTarget = path.join(projectRoot, '.roomodes');
+
+    if (!fs.existsSync(roomodesTarget)) {
+      fs.copyFileSync(roomodesSource, roomodesTarget);
+      console.log(`${colors.green}✓ Created .roomodes file in project root${colors.reset}`);
+    } else {
+      console.log(`${colors.yellow}ℹ .roomodes file already exists${colors.reset}`);
+    }
+
+    // Create complete .roo directory structure
+    const directories = [
+      // Basic structure
+      '.roo',
+      '.roo/logs',
+      
+      // Mode-specific logs
+      '.roo/logs/orchestrator',
+      '.roo/logs/code',
+      '.roo/logs/architect',
+      '.roo/logs/ask',
+      '.roo/logs/debug',
+      '.roo/logs/memory',
+      '.roo/logs/deep-research',
+      
+      // Memory structure
+      '.roo/memory',
+      '.roo/memory/indices',
+      '.roo/memory/assets'
+    ];
+    
+    // Create directories
+    let createdDirs = 0;
+    directories.forEach(dir => {
+      const dirPath = path.join(projectRoot, dir);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+        createdDirs++;
+      }
+    });
+    
+    console.log(`${colors.green}✓ Created ${createdDirs} directories in .roo structure${colors.reset}`);
+
+    // Create boomerang state file if it doesn't exist
+    const boomerangPath = path.join(projectRoot, '.roo', 'boomerang-state.json');
+    if (!fs.existsSync(boomerangPath)) {
+      fs.writeFileSync(boomerangPath, JSON.stringify({
+        "tasks": {},
+        "transitions": [],
+        "version": "1.0.0"
+      }, null, 2));
+      console.log(`${colors.green}✓ Created boomerang-state.json file${colors.reset}`);
+    } else {
+      console.log(`${colors.yellow}ℹ boomerang-state.json already exists${colors.reset}`);
+    }
+    
+    // Create docker-compose.yml file if it doesn't exist
+    const dockerComposePath = path.join(projectRoot, 'docker-compose.yml');
+    if (!fs.existsSync(dockerComposePath)) {
+      const dockerComposeContent = `services:
+  weaviate:
+    image: semitechnologies/weaviate:1.19.6
+    ports:
+      - "8080:8080"
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_HOSTNAME: 'node1'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+
+  neo4j:
+    image: neo4j:5.9.0
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/password
+    volumes:
+      - neo4j_data:/data
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:0.4.15
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+
+volumes:
+  weaviate_data:
+  neo4j_data:
+  mongodb_data:
+  chroma_data:`;
+      
+      fs.writeFileSync(dockerComposePath, dockerComposeContent);
+      console.log(`${colors.green}✓ Created docker-compose.yml file${colors.reset}`);
+    } else {
+      console.log(`${colors.yellow}ℹ docker-compose.yml already exists${colors.reset}`);
+    }
+
+    // Verify setup was successful
+    const verificationPaths = [
+      path.join(projectRoot, '.roomodes'),
+      path.join(projectRoot, '.roo', 'boomerang-state.json'),
+      path.join(projectRoot, 'docker-compose.yml')
+    ];
+    
+    const missingPaths = verificationPaths.filter(p => !fs.existsSync(p));
+    
+    if (missingPaths.length === 0) {
+      console.log(`\n${colors.green}${colors.bright}✓ Roo framework setup completed successfully!${colors.reset}`);
+    } else {
+      console.log(`\n${colors.yellow}⚠ Roo framework setup partially completed. The following files are missing:${colors.reset}`);
+      missingPaths.forEach(p => console.log(`  - ${p}`));
+      console.log(`\n${colors.yellow}Please check permissions and try running the setup again.${colors.reset}`);
+    }
+    
+    // Always ask if user wants to start Docker containers, regardless of verification
+    console.log(`\n${colors.bright}Docker Setup:${colors.reset}`);
+    console.log(`The framework requires database servers for full functionality.`);
+    rl.question(`${colors.yellow}Do you want to start the required database servers using Docker? (Y/n) ${colors.reset}`, (answer) => {
+      if (answer.toLowerCase() !== 'n' && answer.toLowerCase() !== 'no') {
+        console.log(`\n${colors.cyan}Starting Docker containers...${colors.reset}`);
+        
+        // Check if Docker is installed
+        exec('docker --version', (error) => {
+          if (error) {
+            console.log(`${colors.red}❌ Docker is not installed or not in PATH.${colors.reset}`);
+            console.log(`${colors.yellow}Please install Docker and Docker Compose, then run:${colors.reset}`);
+            console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+            finishSetup();
+            return;
+          }
+          
+          // Start Docker containers - use 'docker compose' instead of 'docker-compose'
+          // as 'docker-compose' is deprecated
+          exec('docker compose up -d', { cwd: projectRoot }, (error, stdout, stderr) => {
+            if (error) {
+              console.log(`${colors.red}❌ Error starting Docker containers:${colors.reset}`);
+              console.log(stderr);
+              console.log(`${colors.yellow}Please start them manually:${colors.reset}`);
+              console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+            } else {
+              console.log(`${colors.green}✓ Docker containers started successfully!${colors.reset}`);
+              console.log(`${colors.dim}${stdout}${colors.reset}`);
+            }
+            finishSetup();
+          });
+        });
+      } else {
+        console.log(`\n${colors.yellow}Skipping Docker container startup.${colors.reset}`);
+        console.log(`${colors.yellow}To start the containers manually, run:${colors.reset}`);
+        console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+        finishSetup();
+      }
+    });
+    
+  } catch (error) {
+    console.error(`\n${colors.red}❌ Error during Roo framework setup:${colors.reset}`);
+    console.error(error);
+    rl.close();
+    process.exit(1);
+  }
 }
 
-console.log('Roo framework setup complete!');
+// Function to display final setup information
+function finishSetup() {
+  console.log(`\n${colors.cyan}Next steps:${colors.reset}`);
+  console.log(`1. Access the framework in your code: ${colors.dim}const rooFramework = require('@sdbingham/roo-framework');${colors.reset}`);
+  console.log(`2. Use memory for knowledge management: ${colors.dim}rooFramework.memory.createMemoryAsset(...)${colors.reset}`);
+  console.log(`3. Use boomerang for task tracking: ${colors.dim}rooFramework.boomerang.createTask(...)${colors.reset}`);
+  rl.close();
+}

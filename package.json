@@ -1,0 +1,12 @@
+{
+  "name": "roo-framework-project",
+  "version": "2.2.5",
+  "description": "Project using the Roo Framework with Docker Integration",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests available\""
+  },
+  "dependencies": {
+    "@sdbingham/roo-framework": "file:./roo-framework-package"
+  }
+}

@@ -1,355 +1,265 @@
-# Building a Structured Transparent and Well Documented AI Team (In Roo Code)
+# Roo Framework Project with MCP-based Memory Architecture v1.1.0
 
-**Building a Structured, Transparent, and Well-Documented AI Team that Delegates Its Own Tasks**
+This project uses the Roo Framework with the new MCP-based Memory Mode architecture. The Memory Mode system has been completely redesigned to use a network of specialized MCP (Model Context Protocol) servers for improved performance, scalability, and reliability.
 
-## 🙏 Support This Work
+We're leveraging real, existing MCP implementations for various database types:
 
-If this project helps you build better AI systems and you'd like to show your appreciation:
+- **Weaviate MCP Server**: Official MCP server for Weaviate vector database integration, serving as the primary knowledge base for Memory Mode.
+- **Neo4j MCP Server**: Official MCP server for Neo4j graph database integration, enabling relationship management between knowledge assets.
+- **MongoDB MCP Server**: Official MCP server for MongoDB document database integration, providing flexible storage and backup capabilities.
+- **Chroma MCP Server**: Official MCP server for Chroma vector database integration, specialized for semantic search capabilities.
+- **mem0-mcp**: Modern memory system for AI applications with MCP integration, providing enhanced memory operations.
 
-- **Buy Me a Coffee**: [https://buymeacoffee.com/mnehmos](https://buymeacoffee.com/mnehmos)
-- **Check out Vario Research**: For advanced Deep Research alternatives (Talking about you Gemini, ChatGPT), visit [https://mnehmos.github.io/VarioResearch/](https://mnehmos.github.io/VarioResearch/) for custom reports in any format (I Prefer customized websites so i can add in API functionalities into your dashboards as needed. (Alpha Vantage, Yahoo Finance, Arxiv, google maps, etc))
+## MCP Implementation Status
 
-## 🌟 Key Features
+The MCP-based Memory Mode architecture uses real, existing MCP implementations for various database types. These implementations are actively maintained, have good documentation, and are easy to integrate with the Roo Framework.
 
-- **Multi-Agent Framework**: Specialized modes for different types of tasks
-- **SPARC Framework**: Structured approach to complex problem-solving
-- **Agentic Boomerang**: Reliable task delegation and tracking system
-- **Structured Documentation**: Consistent, traceable documentation
-- **Token Optimization**: Efficient resource usage through the "Scalpel, not Hammer" approach
+To use the MCP-based Memory Mode architecture:
 
-## 🧩 Specialized Modes
-
-The system includes the following specialized modes:
-
-- **🪃 Orchestrator**: Task decomposition, assignment, and verification
-- **💻 Code**: Software implementation and optimization
-- **🏛️ Architect**: System design and pattern application
-- **❓ Ask**: Information retrieval, evaluation, and communication
-- **🪲 Debug**: Problem diagnosis and solution validation
-- **💾 Memory**: Knowledge storage, organization, and retrieval
-- **🔍 Deep Research**: In-depth investigation and analysis
-
-## 🏗️ Architecture
-
-Below is an architectural overview of how the Roo framework operates:
-
-```
-┌─────────────────────────────────┐
-│            VS Code              │
-│     (Primary Development        │
-│          Environment)           │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│             Roo Code            │
-│                ↓                │
-│          System Prompt          │
-│   (Contains SPARC Framework:    │
-│    • Specification, Pseudocode, │
-│      Architecture, Refinement,  │
-│      Completion methodology     │
-│    • Advanced reasoning models  │
-│    • Best practices enforcement │
-│    • Memory Bank integration    │
-│    • Boomerang pattern support) │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐      ┌─────────────────────────┐
-│           Orchestrator          │      │         User            │
-│     (System Prompt contains:    │      │     (Customer with      │
-│      roles, definitions,        │◄─────┤     minimal context)    │
-│      systems, processes,        │      │                         │
-│      nomenclature, etc.)        │      └─────────────────────────┘
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│        Query Processing         │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│         MCP → Reprompt          │
-│     (Only called on direct      │
-│         user input)             │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│     Structured Prompt Creation  │
-│                                 │
-│       Project Prompt Eng.       │
-│       Project Context           │
-│       System Prompt             │
-│       Role Prompt               │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│           Orchestrator          │
-│     (System Prompt contains:    │
-│      roles, definitions,        │
-│      systems, processes,        │
-│      nomenclature, etc.)        │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐
-│         Subtask Prompt         │
-│   (Generated by Orchestrator    │
-│        with structure)          │
-│                                 │
-│    ┌─────────┐  ┌─────────┐    │
-│    │  Topic  │  │ Context │    │
-│    └─────────┘  └─────────┘    │
-│                                 │
-│    ┌─────────┐  ┌─────────┐    │
-│    │  Scope  │  │ Output  │    │
-│    └─────────┘  └─────────┘    │
-│                                 │
-│    ┌─────────────────────┐     │
-│    │       Extras        │     │
-│    └─────────────────────┘     │
-└───────────────┬─────────────────┘
-                │
-                ▼
-┌─────────────────────────────────┐   ┌────────────────────────────────────┐
-│       Specialized Modes         │   │           MCP Tools                 │
-│                                 │   │                                     │
-│  ┌────────┐ ┌────────┐ ┌─────┐ │   │ ┌─────────┐  ┌─────────────────┐   │
-│  │  Code  │ │ Debug  │ │ ... │ │──►│ │ Basic   │  │ CLI/Shell        │   │
-│  └────┬───┘ └────┬───┘ └──┬──┘ │   │ │ CRUD    │  │ (cmd/PowerShell) │   │
-│       │          │        │    │   │ └─────────┘  └─────────────────┘   │
-└───────┼──────────┼────────┼────┘   │                                     │
-        │          │        │        │ ┌─────────┐  ┌─────────────────┐   │
-        │          │        │        │ │ API     │  │ Browser          │   │
-        │          │        └───────►│ │ Calls   │  │ Automation       │   │
-        │          │                 │ │ (Alpha  │  │ (Playwright)     │   │
-        │          │                 │ │ Vantage)│  │                  │   │
-        │          │                 │ └─────────┘  └─────────────────┘   │
-        │          │                 │                                     │
-        │          └────────────────►│ ┌──────────────────────────────┐   │
-        │                            │ │        LLM Calls              │   │
-        │                            │ │                               │   │
-        │                            │ │ • Basic Queries               │   │
-        └───────────────────────────►│ │ • Reporter Format            │   │
-                                     │ │ • Logic MCP Primitives        │   │
-                                     │ │ • Sequential Thinking         │   │
-                                     │ └──────────────────────────────┘   │
-                                     └────────────────┬─────────────────┬─┘
-                                                      │                 │
-                                                      ▼                 │
-┌─────────────────────────────────────────────────────────────────┐    │
-│                   Recursive Loop                                │    │
-│                                                                 │    │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │    │
-│  │     Task Execution     │    │      Reporting        │       │    │
-│  │                        │    │                       │       │    │
-│  │ • Execute assigned task│───►│ • Report work done    │       │◄───┘
-│  │ • Solve specific issue │    │ • Share issues found  │       │
-│  │ • Maintain focus       │    │ • Provide learnings   │       │
-│  └────────────────────────┘    └─────────┬─────────────┘       │
-│                                           │                     │
-│                                           ▼                     │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │
-│  │   Task Delegation      │    │    Deliberation       │       │
-│  │                        │◄───┤                       │       │
-│  │ • Identify next steps  │    │ • Assess progress     │       │
-│  │ • Assign to best mode  │    │ • Integrate learnings │       │
-│  │ • Set clear objectives │    │ • Plan next phase     │       │
-│  └────────────────────────┘    └───────────────────────┘       │
-│                                                                 │
-└────────────────────────────────┬────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     Memory Mode                                  │
-│                                                                 │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │
-│  │  Project Archival      │    │   SQL Database        │       │
-│  │                        │    │                       │       │
-│  │ • Create memory folder │───►│ • Store project data  │       │
-│  │ • Extract key learnings│    │ • Index for retrieval │       │
-│  │ • Organize artifacts   │    │ • Version tracking    │       │
-│  └────────────────────────┘    └─────────┬─────────────┘       │
-│                                           │                     |
-│                                           ▼                     │
-│  ┌────────────────────────┐    ┌───────────────────────┐       │
-│  │  Memory MCP            │    │   RAG System          │       │
-│  │                        │◄───┤                       │       │
-│  │ • Database writes      │    │ • Vector embeddings   │       │
-│  │ • Data validation      │    │ • Semantic indexing   │       │
-│  │ • Structured storage   │    │ • Retrieval functions │       │
-│  └─────────────┬──────────┘    └───────────────────────┘       │
-│                │                                               │
-└────────────────┼───────────────────────────────────────────────┘
-                 │
-                 └───────────────────────────────────┐
-                                                     ▼
-┌─────────────────────────────────┐      ┌─────────────────────────┐
-│           Orchestrator          │      │         User            │
-│     (System Prompt contains:    │      │     (Customer with      │
-│      roles, definitions,        │◄─────┤     minimal context)    │
-│      systems, processes,        │      │                         │
-│      nomenclature, etc.)        │      └─────────────────────────┘
-└───────────────┬─────────────────┘
-|
-              Restart Recursive Loop
-```
-## 🚀 Getting Started
-
-### Prerequisites
-
-- A compatible AI assistant that supports custom modes
-- Basic understanding of the SPARC framework concepts
-
-### Installation
-
-#### Option 1: NPM (Coming Soon)
-
-```
-
-```
-=======
-
-#### Option 2: Manual Setup
-
-1. Clone this repository:
-   ```
-   git clone https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team.git
+1. Build and publish the updated package with the MCP-based Memory Mode implementation:
+   ```bash
+   cd roo-framework-package
+   npm publish
    ```
 
-2. Copy the `.roomodes` file to your project root
+2. Install the updated package in your project:
+   ```bash
+   npm install @sdbingham/roo-framework@latest
+   ```
 
-3. Configure your AI assistant to use the custom modes:
-   - Click the "Modes" button in the Roo sidebar
-   - Select "Edit Project Modes (.roomodes)"
-   - Verify that the content matches the `.roomodes` file from this repository
-   - Click "Save"
+3. Follow the "Getting Started" instructions below to set up and use the MCP-based Memory Mode.
 
-4. Set up the custom instructions:
-   - Click the "Modes" button in the Roo sidebar
-   - Scroll down to "Custom Instructions for All Modes"
-   - Copy the contents of `templates/custom-instructions-for-all-modes.md`
-   - Paste into the Custom Instructions field
-   - Click "Save"
+## MCP-based Memory Architecture
 
-5. Create the `.roo` directory structure:
-   - Create a `.roo` directory in your project root
-   - Add subdirectories for each mode: `rules-orchestrator`, `rules-code`, etc.
-   - Create a `logs` directory for activity tracking
-   - Add a `memory` directory for knowledge storage
+The Memory Mode system uses four specialized MCP servers:
 
-6. Initialize the boomerang state:
-   - Create a `.roo/boomerang-state.json` file with an empty JSON object: `{}`
+- **Weaviate MCP**: Primary knowledge base with combined vector search and data storage
+- **Neo4j MCP**: Graph database for managing complex relationships between memory assets
+- **MongoDB MCP**: Document database for flexible storage and efficient querying
+- **Chroma MCP**: Vector database optimized for semantic search operations
 
-#### Option 3: Direct Setup with AI Assistant
+These servers are integrated through a unified adapter layer that provides a consistent API for interacting with the MCPs.
 
-If you prefer to set up the framework directly using an AI assistant like Roo, Claude, or ChatGPT, you can copy and paste the following prompt:
+## MCP Server Locations and Testing
 
-```
-I want to set up the Ultimate Roo Code Hack multi-agent framework. Please help me:
+### MCP Server Locations
 
-1. Create a .roomodes file with configurations for these specialized modes:
-   - Orchestrator (task management and delegation)
-   - Code (software implementation)
-   - Architect (system design)
-   - Ask (information discovery)
-   - Debug (problem diagnosis)
-   - Memory (knowledge management)
-   - Deep Research (in-depth investigation)
+After installation and running the setup script, the MCP configurations are stored in the `.roo/mcp/` directory in your project root. Each MCP server has its own configuration file:
 
-2. Create a meet-the-team.md file that describes each mode as a team member in plain English
+- `weaviate-server.json`: Configuration for the Weaviate MCP (primary knowledge base)
+- `neo4j-server.json`: Configuration for the Neo4j MCP (graph database)
+- `mongodb-server.json`: Configuration for the MongoDB MCP (document database)
+- `chroma-server.json`: Configuration for the Chroma MCP (vector database)
+- `mem0-server.json`: Configuration for the mem0-mcp server (enhanced memory operations)
 
-3. Set up custom instructions that implement:
-   - The SPARC framework for structured reasoning
-   - Boomerang logic for task delegation
-   - Token optimization strategies
-   - Standardized documentation formats
+The MCP servers themselves are Node.js packages that are installed as dependencies of the Roo Framework package.
 
-Please provide the complete content for each file and instructions on how to use them.
+### MCP Server Installation
+
+The MCP servers are installed as dependencies of the Roo Framework package. You can install them manually using:
+
+```bash
+npm install @roo/mcp-weaviate-server @roo/mcp-neo4j-server @roo/mcp-mongodb-server @roo/mcp-chroma-server mem0-mcp
 ```
 
-### Additional Configuration
+Or they will be installed automatically when you install the Roo Framework package.
 
-#### Configure Enhance Prompt (Optional)
-1. Click the "Support Prompts" button in the Roo sidebar
-2. Select "Enhance Prompt"
-3. Copy the contents of `templates/enhance-prompt-template.md`
-4. Paste into the Prompt field
-5. Click "Save"
+### Testing the MCP Servers
 
-This feature helps transform basic prompts into comprehensive, structured project prompts.
+You can test the MCP servers using the following commands:
 
-## 🧩 Basic Usage
+1. **Check MCP Server Status**:
+   ```bash
+   npx roo-framework check-mcp-status
+   ```
+   This command will check the status of all MCP servers and show you which ones are running.
 
-1. **Start with Orchestrator Mode** - This is your project manager who will coordinate everything
-2. **Describe your project** - Be as detailed as possible in your initial prompt
-3. **Let Orchestrator break it down** - It will create subtasks and delegate to specialist modes
-4. **Review the results** - Orchestrator will integrate all the pieces and present the final result
+2. **Start MCP Servers**:
+   ```bash
+   npx roo-framework start-mcp-servers
+   ```
+   This command will start all MCP servers that are not already running.
 
-## 🧩 Using the Modes
+3. **Run Comprehensive Tests**:
+   ```bash
+   node test-memory-mcp.js
+   ```
+   This command will run the comprehensive test suite for the MCP-based Memory Mode system, which includes:
+   - Unit tests for the memory-mcp-adapter.js file
+   - Integration tests for MCP server interaction
+   - System tests for the entire Memory Mode system
+   - Agent interaction tests for different Roo agents
 
-### Switching Modes
-1. Click on the current mode name in the bottom left corner of the Roo interface
-2. Select the desired mode from the dropdown menu
+4. **Run Specific Test Suites**:
+   ```bash
+   node test-memory-mcp.js unit       # Run unit tests only
+   node test-memory-mcp.js integration # Run integration tests only
+   node test-memory-mcp.js system     # Run system tests only
+   node test-memory-mcp.js agents     # Run agent interaction tests only
+   ```
 
-### Using the Enhance Prompt Feature
-1. Type your basic prompt in the chat
-2. Click the ✨ button next to the send button
-3. Roo will transform your basic prompt into a comprehensive, structured project prompt
+## Testing the Memory MCP System
 
-### Creating Custom Tasks
-When creating tasks for specialist modes, use the standardized task prompt format:
+To test the Memory MCP system, use the following commands:
 
-```markdown
-# [Task Title]
+```bash
+# Run all Memory MCP tests
+npm test
 
-## Context
-[Background information and relationship to the larger project]
-
-## Scope
-[Specific requirements and boundaries for the task]
-
-## Expected Output
-[Detailed description of deliverables]
-
-## Additional Resources
-[Relevant tips, examples, or reference materials]
+# Run specific test suites
+npm run test-memory-mcp-unit
+npm run test-memory-mcp-integration
+npm run test-memory-mcp-system
+npm run test-memory-mcp-agents
 ```
 
-This structured format ensures that specialist modes have all the information they need to complete tasks effectively and consistently.
+## Debugging the Memory MCP System
 
-## 🔄 The Boomerang Pattern
+To debug the Memory MCP system, use the following commands:
 
-The Boomerang Pattern ensures reliable task delegation and tracking:
+```bash
+# Check status of all MCP servers
+npm run debug-memory-mcp status
 
-1. Add new modes by updating `config.json` and `.roomodes`
-2. Create corresponding rule files in `.roo/rules-{new-mode}/rules.md`
-3. Implement mode-specific logging in `.roo/logs/{new-mode}-activity.md`
-4. Update memory indexes to accommodate new artifact types
+# Trace an operation through the adapter layer
+npm run debug-memory-mcp trace <operation>
 
-> **Note**: While `.roomodes` is used for mode assignments, the `.roo` directory structure is still used for keeping notes, logs, and documenting activity and changes.
+# Diagnose issues in the Memory Mode system
+npm run debug-memory-mcp diagnose
 
-## 📊 Performance Optimization
+# Get recommendations for optimizing performance
+npm run debug-memory-mcp optimize
+```
 
-- Keep context window utilization below 40%
-- Start with the least token-intensive cognitive primitives
-- Break complex tasks into atomic components
-- Use the most specialized mode for each subtask
+## Monitoring the Memory MCP System
 
-## 🤝 Contributing
+To monitor the Memory MCP system in real-time, use the following command:
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+```bash
+npm run memory-mcp-monitor
+```
 
-## 📄 License
+This will start a background service that monitors the status of all MCP servers and provides real-time updates on their performance.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Documentation
 
-## 🙏 Acknowledgments
+For more information about the MCP-based Memory Mode architecture, see the following documentation:
 
-- The SPARC framework developers
-- Contributors to the multi-agent AI research community (Roo Code, huge shoutout)
-- All users who provide feedback and suggestions
+- [Memory MCP Architecture](roo-framework-package/docs/memory-mcp-architecture.md): Detailed technical documentation of the MCP-based architecture
+- [Test Memory MCP README](roo-framework-package/test/test-memory-mcp-readme.md): Documentation of the test suite
+- [Debug Memory MCP README](roo-framework-package/scripts/debug-memory-mcp-readme.md): Documentation of the debugging tools
+- [Memory MCP Test Report](roo-framework-package/test/memory-mcp-test-report.md): Detailed report of test results and recommendations
+
+## Project Structure
+
+- `roo-framework-package/`: The Roo Framework package with the MCP-based Memory Mode implementation
+- `test-memory-mcp.js`: Script for running Memory MCP tests
+- `debug-memory-mcp.js`: Script for debugging the Memory MCP system
+- `memory-mcp-monitor.js`: Script for monitoring the Memory MCP system in real-time
+- `package.json`: Project configuration with scripts for testing, debugging, and monitoring
+
+## Getting Started
+
+1. Build and publish the updated package with the MCP-based Memory Mode implementation:
+   ```bash
+   cd roo-framework-package
+   npm publish
+   ```
+
+2. Install the updated package in your project:
+   ```bash
+   npm install @sdbingham/roo-framework@latest
+   ```
+
+3. Run the setup script:
+   ```bash
+   npx roo-framework setup
+   ```
+
+4. Check MCP server status:
+   ```bash
+   npx roo-framework check-mcp-status
+   ```
+
+5. Start MCP servers if needed:
+   ```bash
+   npx roo-framework start-mcp-servers
+   ```
+
+6. Run the tests:
+   ```bash
+   npm test
+   ```
+
+7. Start using the Roo Framework with MCP-based Memory Mode in your code:
+   ```javascript
+   const rooFramework = require('@sdbingham/roo-framework');
+   const memory = rooFramework.memory;
+
+   // Create a memory asset
+   const asset = memory.createMemoryAsset({
+     type: memory.ASSET_TYPES.CONCEPT,
+     name: 'Semantic Search',
+     content: 'Semantic search is a data searching technique...',
+     tags: ['search', 'semantic', 'nlp']
+   });
+   ```
+
+## Troubleshooting
+
+If you encounter issues with the MCP-based Memory Mode architecture, check the following:
+
+1. **MCP Directory Not Found**: If the `.roo/mcp/` directory is not found after running the setup script, it means you're using an older version of the package that doesn't include the MCP-based Memory Mode implementation. Make sure you've published and installed the updated package.
+
+2. **MCP Commands Not Recognized**: If the `check-mcp-status` and `start-mcp-servers` commands are not recognized by the CLI, it means you're using an older version of the package. Make sure you've published and installed the updated package.
+
+3. **MCP Servers Not Starting**: If the MCP servers don't start, check the error messages for details. You may need to install additional dependencies or configure your system to run the MCP servers.
+
+## MCP Server Usage
+
+Each MCP server provides specific tools for interacting with its underlying database:
+
+### Weaviate MCP Server
+```javascript
+const result = await mcp.use({
+  server: "weaviate-server",
+  tool: "create_object",
+  args: { class: "MemoryAsset", properties: {...} }
+});
+```
+
+### Neo4j MCP Server
+```javascript
+const result = await mcp.use({
+  server: "neo4j-server",
+  tool: "create_relationship",
+  args: { from_node: "sourceId", to_node: "targetId" }
+});
+```
+
+### MongoDB MCP Server
+```javascript
+const result = await mcp.use({
+  server: "mongodb-server",
+  tool: "create_document",
+  args: { collection: "memory_assets", document: {...} }
+});
+```
+
+### Chroma MCP Server
+```javascript
+const result = await mcp.use({
+  server: "chroma-server",
+  tool: "query_embeddings",
+  args: { collection: "memory_assets", query_text: "query" }
+});
+```
+
+### mem0-mcp Server
+```javascript
+const result = await mcp.use({
+  server: "mem0-server",
+  tool: "add_memory",
+  args: { content: "text", userId: "user1" }
+});
+```

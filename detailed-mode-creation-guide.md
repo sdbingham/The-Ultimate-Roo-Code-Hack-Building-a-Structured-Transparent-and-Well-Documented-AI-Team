@@ -1,4 +1,4 @@
-# Detailed Guide: Creating Custom Modes in Roo
+Roo# Detailed Guide: Creating Custom Modes in Roo
 
 This guide provides comprehensive instructions on how to create and configure custom modes in Roo, ensuring consistency and eliminating contradictions in setup and usage.
 
