@@ -121,27 +121,32 @@ async function initializeClients() {
     // });
     
     // Initialize Weaviate client (same as memory-mcp-adapter.js)
-    if (typeof weaviate.client === 'function') {
-      weaviateClient = weaviate.client({
-        scheme: config.weaviate.scheme,
-        host: config.weaviate.host,
-      });
-    } else if (typeof weaviate.Client === 'function') {
-      weaviateClient = new weaviate.Client({
-        scheme: config.weaviate.scheme,
-        host: config.weaviate.host,
-      });
-    } else {
-      try {
-        weaviateClient = weaviate({
+    try {
+      if (typeof weaviate.client === 'function') {
+        weaviateClient = weaviate.client({
           scheme: config.weaviate.scheme,
           host: config.weaviate.host,
         });
-      } catch (error) {
-        console.error("Weaviate client API not found. Check weaviate-ts-client version.");
-        console.error(error.message);
-        return false;
+      } else if (typeof weaviate.Client === 'function') {
+        weaviateClient = new weaviate.Client({
+          scheme: config.weaviate.scheme,
+          host: config.weaviate.host,
+        });
+      } else {
+        try {
+          weaviateClient = weaviate({
+            scheme: config.weaviate.scheme,
+            host: config.weaviate.host,
+          });
+        } catch (error) {
+          console.error("Weaviate client API not found. Check weaviate-ts-client version.");
+          console.error(error.message);
+          weaviateClient = null;
+        }
       }
+    } catch (error) {
+      console.error("Error initializing Weaviate client:", error.message);
+      weaviateClient = null;
     }
     
     // Initialize Weaviate vector store with LangChain
@@ -152,10 +157,16 @@ async function initializeClients() {
     // });
     
     // Initialize Neo4j driver
-    neo4jDriver = neo4j.driver(
-      config.neo4j.uri,
-      neo4j.auth.basic(config.neo4j.username, config.neo4j.password)
-    );
+    try {
+      neo4jDriver = neo4j.driver(
+        config.neo4j.uri,
+        neo4j.auth.basic(config.neo4j.username, config.neo4j.password)
+      );
+      console.log("Neo4j driver initialized successfully");
+    } catch (error) {
+      console.error("Error initializing Neo4j driver:", error.message);
+      neo4jDriver = null;
+    }
     
     // Initialize Neo4j graph with LangChain
     // neo4jGraph = new Neo4jGraph({
@@ -164,8 +175,14 @@ async function initializeClients() {
     // });
     
     // Initialize MongoDB client
-    mongoClient = new MongoClient(config.mongodb.uri);
-    await mongoClient.connect();
+    try {
+      mongoClient = new MongoClient(config.mongodb.uri);
+      await mongoClient.connect();
+      console.log("MongoDB client initialized successfully");
+    } catch (error) {
+      console.error("Error initializing MongoDB client:", error.message);
+      mongoClient = null;
+    }
     
     // Initialize MongoDB vector store with LangChain
     // const mongoDb = mongoClient.db(config.mongodb.database);
@@ -176,7 +193,13 @@ async function initializeClients() {
     // });
     
     // Initialize Chroma client
-    chromaClient = new ChromaClient({ path: config.chroma.path });
+    try {
+      chromaClient = new ChromaClient({ path: config.chroma.path });
+      console.log("Chroma client initialized successfully");
+    } catch (error) {
+      console.error("Error initializing Chroma client:", error.message);
+      chromaClient = null;
+    }
     
     // Initialize Chroma vector store with LangChain
     // const chromaCollection = await chromaClient.getOrCreateCollection({
@@ -186,8 +209,12 @@ async function initializeClients() {
     //   collection: chromaCollection
     // });
     
-    // Ensure schemas and collections exist
-    await ensureSchemas();
+    // Ensure schemas and collections exist if clients are available
+    if (weaviateClient || neo4jDriver || mongoClient || chromaClient) {
+      await ensureSchemas();
+    } else {
+      console.warn("No database clients available. Skipping schema initialization.");
+    }
     
     console.log("LangChain MCP adapter initialized successfully");
     return true;
@@ -203,50 +230,71 @@ async function initializeClients() {
  */
 async function ensureSchemas() {
   try {
-    // Ensure Weaviate schema (same as memory-mcp-adapter.js)
-    const schemaExists = await weaviateClient.schema.exists('MemoryAsset');
-    if (!schemaExists) {
-      await weaviateClient.schema.classCreator()
-        .withClass({
-          class: 'MemoryAsset',
-          properties: [
-            { name: 'type', dataType: ['string'] },
-            { name: 'name', dataType: ['string'] },
-            { name: 'content', dataType: ['text'] },
-            { name: 'tags', dataType: ['string[]'] },
-            { name: 'created_at', dataType: ['date'] },
-            { name: 'updated_at', dataType: ['date'] },
-            { name: 'embedding', dataType: ['vector'] }
-          ],
-        })
-        .do();
+    // Ensure Weaviate schema (if available)
+    if (weaviateClient) {
+      try {
+        const schemaExists = await weaviateClient.schema.exists('MemoryAsset');
+        if (!schemaExists) {
+          await weaviateClient.schema.classCreator()
+            .withClass({
+              class: 'MemoryAsset',
+              properties: [
+                { name: 'type', dataType: ['string'] },
+                { name: 'name', dataType: ['string'] },
+                { name: 'content', dataType: ['text'] },
+                { name: 'tags', dataType: ['string[]'] },
+                { name: 'created_at', dataType: ['date'] },
+                { name: 'updated_at', dataType: ['date'] },
+                { name: 'embedding', dataType: ['vector'] }
+              ],
+            })
+            .do();
+          console.log("Created Weaviate schema for MemoryAsset");
+        }
+      } catch (error) {
+        console.error("Error ensuring Weaviate schema:", error.message);
+      }
     }
     
-    // Ensure Neo4j constraints (same as memory-mcp-adapter.js)
-    const neo4jSession = neo4jDriver.session();
-    try {
-      await neo4jSession.run(`
-        CREATE CONSTRAINT memory_asset_id IF NOT EXISTS
-        FOR (a:MemoryAsset) REQUIRE a.id IS UNIQUE
-      `);
-    } finally {
-      await neo4jSession.close();
+    // Ensure Neo4j constraints (if available)
+    if (neo4jDriver) {
+      try {
+        const neo4jSession = neo4jDriver.session();
+        try {
+          await neo4jSession.run(`
+            CREATE CONSTRAINT memory_asset_id IF NOT EXISTS
+            FOR (a:MemoryAsset) REQUIRE a.id IS UNIQUE
+          `);
+          console.log("Created Neo4j constraint for MemoryAsset");
+        } finally {
+          await neo4jSession.close();
+        }
+      } catch (error) {
+        console.error("Error ensuring Neo4j constraints:", error.message);
+      }
     }
     
-    // Ensure MongoDB collections (same as memory-mcp-adapter.js)
-    const db = mongoClient.db(config.mongodb.database);
-    const mongoCollections = await db.listCollections().toArray();
-    if (!mongoCollections.find(c => c.name === 'memory_assets')) {
-      await db.createCollection('memory_assets');
-      await db.collection('memory_assets').createIndex({ id: 1 }, { unique: true });
-    }
-    
-    // Create text index for search
-    try {
-      await db.collection('memory_assets').createIndex({ content: 'text', name: 'text' });
-      console.log("Created text index on memory_assets collection");
-    } catch (indexError) {
-      console.warn("Error creating text index:", indexError.message);
+    // Ensure MongoDB collections (if available)
+    if (mongoClient) {
+      try {
+        const db = mongoClient.db(config.mongodb.database);
+        const mongoCollections = await db.listCollections().toArray();
+        if (!mongoCollections.find(c => c.name === 'memory_assets')) {
+          await db.createCollection('memory_assets');
+          await db.collection('memory_assets').createIndex({ id: 1 }, { unique: true });
+          console.log("Created MongoDB collection for memory_assets");
+        }
+        
+        // Create text index for search
+        try {
+          await db.collection('memory_assets').createIndex({ content: 'text', name: 'text' });
+          console.log("Created text index on memory_assets collection");
+        } catch (indexError) {
+          console.warn("Error creating text index:", indexError.message);
+        }
+      } catch (error) {
+        console.error("Error ensuring MongoDB collections:", error.message);
+      }
     }
     
     // Create vector index for MongoDB Atlas Vector Search (if using LangChain)
@@ -264,16 +312,19 @@ async function ensureSchemas() {
     //   console.warn("Error creating vector index:", indexError.message);
     // }
     
-    // Ensure Chroma collection (same as memory-mcp-adapter.js)
-    try {
-      const chromaCollections = await chromaClient.listCollections();
-      if (!chromaCollections.find(c => c.name === 'memory_assets')) {
-        await chromaClient.createCollection({
-          name: 'memory_assets',
-        });
+    // Ensure Chroma collection (if available)
+    if (chromaClient) {
+      try {
+        const chromaCollections = await chromaClient.listCollections();
+        if (!chromaCollections.find(c => c.name === 'memory_assets')) {
+          await chromaClient.createCollection({
+            name: 'memory_assets',
+          });
+          console.log("Created Chroma collection for memory_assets");
+        }
+      } catch (chromaError) {
+        console.warn("Error with Chroma collections:", chromaError.message);
       }
-    } catch (chromaError) {
-      console.warn("Error with Chroma collections:", chromaError.message);
     }
     
     return true;
@@ -296,7 +347,7 @@ async function ensureSchemas() {
 async function createMemoryAsset(assetData) {
   try {
     // Initialize clients if needed
-    if (!weaviateClient) {
+    if (!weaviateClient && !neo4jDriver && !mongoClient && !chromaClient) {
       await initializeClients();
     }
     
@@ -309,74 +360,110 @@ async function createMemoryAsset(assetData) {
     // For now, use a mock embedding
     const mockEmbedding = Array(1536).fill(0).map(() => Math.random());
     
-    // Create asset in Weaviate
-    await weaviateClient.data.creator()
-      .withClassName('MemoryAsset')
-      .withId(assetId)
-      .withProperties({
-        type: assetData.type,
-        name: assetData.name,
-        content: assetData.content,
-        tags: assetData.tags || [],
-        created_at: now,
-        updated_at: now,
-        embedding: mockEmbedding // Would use real embedding in production
-      })
-      .do();
-    
-    // Create asset in MongoDB for backup
-    const db = mongoClient.db(config.mongodb.database);
-    await db.collection('memory_assets').insertOne({
-      id: assetId,
-      type: assetData.type,
-      name: assetData.name,
-      content: assetData.content,
-      tags: assetData.tags || [],
-      created_at: now,
-      updated_at: now,
-      vector_embedding: mockEmbedding // Would use real embedding in production
-    });
-    
-    // Create node in Neo4j
-    const neo4jSession = neo4jDriver.session();
-    try {
-      await neo4jSession.run(`
-        CREATE (a:MemoryAsset {
-          id: $id,
-          type: $type,
-          name: $name,
-          created_at: $created_at
-        })
-        RETURN a
-      `, {
-        id: assetId,
-        type: assetData.type,
-        name: assetData.name,
-        created_at: now
-      });
-    } finally {
-      await neo4jSession.close();
+    // Create asset in Weaviate (if available)
+    if (weaviateClient) {
+      try {
+        await weaviateClient.data.creator()
+          .withClassName('MemoryAsset')
+          .withId(assetId)
+          .withProperties({
+            type: assetData.type,
+            name: assetData.name,
+            content: assetData.content,
+            tags: assetData.tags || [],
+            created_at: now,
+            updated_at: now,
+            embedding: mockEmbedding // Would use real embedding in production
+          })
+          .do();
+        console.log(`Asset created in Weaviate: ${assetId}`);
+      } catch (error) {
+        console.warn(`Error creating asset in Weaviate: ${error.message}`);
+        // Continue with other databases
+      }
+    } else {
+      console.warn("Weaviate client not available, skipping Weaviate storage");
     }
     
-    // Add to Chroma for vector search
-    try {
-      const chromaCollection = await chromaClient.getCollection({
-        name: 'memory_assets',
-      });
-      
-      await chromaCollection.add({
-        ids: [assetId],
-        embeddings: [mockEmbedding], // Would use real embedding in production
-        metadatas: [{
+    // Create asset in MongoDB for backup (if available)
+    if (mongoClient) {
+      try {
+        const db = mongoClient.db(config.mongodb.database);
+        await db.collection('memory_assets').insertOne({
           id: assetId,
           type: assetData.type,
           name: assetData.name,
-          tags: assetData.tags ? assetData.tags.join(',') : ''
-        }],
-        documents: [assetData.content]
-      });
-    } catch (chromaError) {
-      console.warn("Error adding to Chroma:", chromaError.message);
+          content: assetData.content,
+          tags: assetData.tags || [],
+          created_at: now,
+          updated_at: now,
+          vector_embedding: mockEmbedding // Would use real embedding in production
+        });
+        console.log(`Asset created in MongoDB: ${assetId}`);
+      } catch (error) {
+        console.warn(`Error creating asset in MongoDB: ${error.message}`);
+        // Continue with other databases
+      }
+    } else {
+      console.warn("MongoDB client not available, skipping MongoDB storage");
+    }
+    
+    // Create node in Neo4j (if available)
+    if (neo4jDriver) {
+      try {
+        const neo4jSession = neo4jDriver.session();
+        try {
+          await neo4jSession.run(`
+            CREATE (a:MemoryAsset {
+              id: $id,
+              type: $type,
+              name: $name,
+              created_at: $created_at
+            })
+            RETURN a
+          `, {
+            id: assetId,
+            type: assetData.type,
+            name: assetData.name,
+            created_at: now
+          });
+          console.log(`Asset created in Neo4j: ${assetId}`);
+        } finally {
+          await neo4jSession.close();
+        }
+      } catch (error) {
+        console.warn(`Error creating asset in Neo4j: ${error.message}`);
+        // Continue with other databases
+      }
+    } else {
+      console.warn("Neo4j driver not available, skipping Neo4j storage");
+    }
+    
+    // Add to Chroma for vector search (if available)
+    if (chromaClient) {
+      try {
+        const chromaCollection = await chromaClient.getCollection({
+          name: 'memory_assets',
+        });
+        
+        await chromaCollection.add({
+          ids: [assetId],
+          embeddings: [mockEmbedding], // Would use real embedding in production
+          metadatas: [{
+            id: assetId,
+            type: assetData.type,
+            name: assetData.name,
+            tags: assetData.tags ? assetData.tags.join(',') : ''
+          }],
+          documents: [assetData.content]
+        });
+        console.log(`Asset created in Chroma: ${assetId}`);
+      } catch (chromaError) {
+        console.warn("Error adding to Chroma:", chromaError.message);
+        // Continue without Chroma
+      }
+    } else {
+      console.warn("Chroma client not available, skipping Chroma storage");
     }
     
     return {
@@ -403,49 +490,62 @@ async function createMemoryAsset(assetData) {
 async function getMemoryAsset(id) {
   try {
     // Initialize clients if needed
-    if (!weaviateClient) {
+    if (!weaviateClient && !neo4jDriver && !mongoClient && !chromaClient) {
       await initializeClients();
     }
     
     // Try to get from Weaviate first
-    try {
-      const result = await weaviateClient.data.getterById()
-        .withClassName('MemoryAsset')
-        .withId(id)
-        .do();
-      
-      if (result.properties) {
-        return {
-          id: id,
-          type: result.properties.type,
-          name: result.properties.name,
-          content: result.properties.content,
-          tags: result.properties.tags || [],
-          created_at: result.properties.created_at,
-          updated_at: result.properties.updated_at
-        };
+    if (weaviateClient) {
+      try {
+        const result = await weaviateClient.data.getterById()
+          .withClassName('MemoryAsset')
+          .withId(id)
+          .do();
+        
+        if (result.properties) {
+          return {
+            id: id,
+            type: result.properties.type,
+            name: result.properties.name,
+            content: result.properties.content,
+            tags: result.properties.tags || [],
+            created_at: result.properties.created_at,
+            updated_at: result.properties.updated_at
+          };
+        }
+      } catch (weaviateError) {
+        console.warn("Weaviate lookup failed, falling back to MongoDB:", weaviateError.message);
       }
-    } catch (weaviateError) {
-      console.warn("Weaviate lookup failed, falling back to MongoDB:", weaviateError.message);
+    } else {
+      console.warn("Weaviate client not available, falling back to MongoDB");
     }
     
     // Fall back to MongoDB
-    const db = mongoClient.db(config.mongodb.database);
-    const asset = await db.collection('memory_assets').findOne({ id });
-    
-    if (!asset) {
-      throw new Error(`Asset with ID ${id} not found`);
+    if (mongoClient) {
+      try {
+        const db = mongoClient.db(config.mongodb.database);
+        const asset = await db.collection('memory_assets').findOne({ id });
+        
+        if (asset) {
+          return {
+            id: asset.id,
+            type: asset.type,
+            name: asset.name,
+            content: asset.content,
+            tags: asset.tags || [],
+            created_at: asset.created_at,
+            updated_at: asset.updated_at
+          };
+        }
+      } catch (mongoError) {
+        console.warn("MongoDB lookup failed:", mongoError.message);
+      }
+    } else {
+      console.warn("MongoDB client not available");
     }
     
-    return {
-      id: asset.id,
-      type: asset.type,
-      name: asset.name,
-      content: asset.content,
-      tags: asset.tags || [],
-      created_at: asset.created_at,
-      updated_at: asset.updated_at
-    };
+    // If we get here, we couldn't find the asset in any database
+    throw new Error(`Asset with ID ${id} not found in any available database`);
   } catch (error) {
     console.error("Error getting memory asset:", error);
     throw error;
@@ -466,13 +566,13 @@ async function getMemoryAsset(id) {
 async function searchMemoryAssets(query, options = {}) {
   try {
     // Initialize clients if needed
-    if (!weaviateClient) {
+    if (!weaviateClient && !neo4jDriver && !mongoClient && !chromaClient) {
       await initializeClients();
     }
     
     let shouldUseSemanticSearch = options.useSemanticSearch !== false;
     
-    if (shouldUseSemanticSearch) {
+    if (shouldUseSemanticSearch && chromaClient) {
       try {
         // In a full implementation, we would use LangChain's vector stores:
         // const results = await weaviateVectorStore.similaritySearch(query, options.limit || 10);
@@ -522,53 +622,63 @@ async function searchMemoryAssets(query, options = {}) {
         // Fall back to MongoDB search
         shouldUseSemanticSearch = false;
       }
+    } else if (shouldUseSemanticSearch) {
+      console.warn("Chroma client not available, falling back to keyword search");
+      shouldUseSemanticSearch = false;
     }
     
     // Use MongoDB for keyword search if semantic search is disabled or failed
-    if (!shouldUseSemanticSearch) {
-      const db = mongoClient.db(config.mongodb.database);
-      
-      // Build query
-      const mongoQuery = {
-        $text: { $search: query }
-      };
-      
-      if (options.type) {
-        mongoQuery.type = options.type;
+    if (!shouldUseSemanticSearch && mongoClient) {
+      try {
+        const db = mongoClient.db(config.mongodb.database);
+        
+        // Build query
+        const mongoQuery = {
+          $text: { $search: query }
+        };
+        
+        if (options.type) {
+          mongoQuery.type = options.type;
+        }
+        
+        if (options.tags && options.tags.length > 0) {
+          mongoQuery.tags = { $in: options.tags };
+        }
+        
+        // Execute query
+        const results = await db.collection('memory_assets')
+          .find(mongoQuery)
+          .project({
+            score: { $meta: 'textScore' },
+            id: 1,
+            type: 1,
+            name: 1,
+            tags: 1,
+            content: 1
+          })
+          .sort({ score: { $meta: 'textScore' } })
+          .limit(options.limit || 10)
+          .toArray();
+        
+        // Format results
+        return results.map(result => ({
+          id: result.id,
+          type: result.type,
+          name: result.name,
+          tags: result.tags || [],
+          relevance: result.score,
+          matchType: 'keyword',
+          preview: result.content.substring(0, 100) + '...'
+        }));
+      } catch (error) {
+        console.warn("Error with MongoDB search:", error.message);
       }
-      
-      if (options.tags && options.tags.length > 0) {
-        mongoQuery.tags = { $in: options.tags };
-      }
-      
-      // Execute query
-      const results = await db.collection('memory_assets')
-        .find(mongoQuery)
-        .project({
-          score: { $meta: 'textScore' },
-          id: 1,
-          type: 1,
-          name: 1,
-          tags: 1,
-          content: 1
-        })
-        .sort({ score: { $meta: 'textScore' } })
-        .limit(options.limit || 10)
-        .toArray();
-      
-      // Format results
-      return results.map(result => ({
-        id: result.id,
-        type: result.type,
-        name: result.name,
-        tags: result.tags || [],
-        relevance: result.score,
-        matchType: 'keyword',
-        preview: result.content.substring(0, 100) + '...'
-      }));
+    } else if (!shouldUseSemanticSearch) {
+      console.warn("MongoDB client not available, cannot perform search");
     }
     
-    // If we get here, both search methods failed
+    // If we get here, both search methods failed or were unavailable
+    console.warn("No search methods available, returning empty results");
     return [];
   } catch (error) {
     console.error("Error searching memory assets:", error);
@@ -587,20 +697,32 @@ async function searchMemoryAssets(query, options = {}) {
 async function generateAssetSummary(assetId, options = {}) {
   try {
     // Initialize clients if needed
-    if (!weaviateClient) {
+    if (!weaviateClient && !neo4jDriver && !mongoClient && !chromaClient) {
       await initializeClients();
     }
     
     // Get the asset
-    const asset = await getMemoryAsset(assetId);
+    let asset;
+    try {
+      asset = await getMemoryAsset(assetId);
+    } catch (error) {
+      console.error(`Error getting asset ${assetId}:`, error.message);
+      return `Unable to generate summary: Asset not found`;
+    }
+    
+    // Check if we have an LLM model available
+    if (!config.langchain.apiKey.anthropic && !config.langchain.apiKey.openai) {
+      console.warn("No LLM API keys available, returning mock summary");
+      return `This is a mock summary of the ${asset.type} "${asset.name}" generated by LangChain. In a real implementation, this would be generated by an LLM like Claude or GPT.`;
+    }
     
     // In a full implementation, we would use LangChain's LLM:
     // const prompt = `Summarize the following ${asset.type} in ${options.maxLength || 100} words or less:\n\n${asset.content}`;
     // const summary = await llmModel.predict(prompt);
     // return summary.trim();
     
-    // For now, return a mock summary
-    return `This is a mock summary of the ${asset.type} "${asset.name}" generated by LangChain. In a real implementation, this would be generated by an LLM like Claude or GPT.`;
+    // For now, return a mock summary with API key info
+    return `This is a mock summary of the ${asset.type} "${asset.name}" generated by LangChain using ${config.langchain.apiKey.anthropic ? 'Claude' : 'OpenAI'} API. In a real implementation, this would be generated by an LLM.`;
   } catch (error) {
     console.error("Error generating asset summary:", error);
     throw error;
@@ -619,64 +741,129 @@ async function generateAssetSummary(assetId, options = {}) {
 async function findRelatedAssets(assetId, options = {}) {
   try {
     // Initialize clients if needed
-    if (!weaviateClient) {
+    if (!weaviateClient && !neo4jDriver && !mongoClient && !chromaClient) {
       await initializeClients();
     }
     
     // Get the asset
-    const asset = await getMemoryAsset(assetId);
+    let asset;
+    try {
+      asset = await getMemoryAsset(assetId);
+    } catch (error) {
+      console.error(`Error getting asset ${assetId}:`, error.message);
+      return [];
+    }
     
     // In a full implementation, we would use LangChain's vector stores:
     // const results = await weaviateVectorStore.similaritySearch(asset.content, options.limit || 5);
     
     // For now, use a simplified approach with Chroma
-    try {
-      const chromaCollection = await chromaClient.getCollection({
-        name: 'memory_assets',
-      });
-      
-      // Build filter if needed
-      let filter = {};
-      if (options.type) {
-        filter.type = options.type;
-      }
-      
-      // Generate query embedding (would use LangChain in production)
-      const mockEmbedding = Array(384).fill(0).map(() => Math.random());
-      
-      const results = await chromaCollection.query({
-        queryEmbeddings: [mockEmbedding],
-        nResults: (options.limit || 5) + 1, // +1 because we'll filter out the original asset
-        filter: filter
-      });
-      
-      // Format results and filter out the original asset
-      const formattedResults = [];
-      for (let i = 0; i < results.ids[0].length; i++) {
-        const id = results.ids[0][i];
-        
-        // Skip the original asset
-        if (id === assetId) continue;
-        
-        const metadata = results.metadatas[0][i];
-        const document = results.documents[0][i];
-        const distance = results.distances[0][i];
-        
-        formattedResults.push({
-          id,
-          type: metadata.type,
-          name: metadata.name,
-          tags: metadata.tags ? metadata.tags.split(',') : [],
-          relevance: 1 - distance, // Convert distance to relevance score
-          preview: document.substring(0, 100) + '...'
+    if (chromaClient) {
+      try {
+        const chromaCollection = await chromaClient.getCollection({
+          name: 'memory_assets',
         });
+        
+        // Build filter if needed
+        let filter = {};
+        if (options.type) {
+          filter.type = options.type;
+        }
+        
+        // Generate query embedding (would use LangChain in production)
+        const mockEmbedding = Array(384).fill(0).map(() => Math.random());
+        
+        const results = await chromaCollection.query({
+          queryEmbeddings: [mockEmbedding],
+          nResults: (options.limit || 5) + 1, // +1 because we'll filter out the original asset
+          filter: filter
+        });
+        
+        // Format results and filter out the original asset
+        const formattedResults = [];
+        for (let i = 0; i < results.ids[0].length; i++) {
+          const id = results.ids[0][i];
+          
+          // Skip the original asset
+          if (id === assetId) continue;
+          
+          const metadata = results.metadatas[0][i];
+          const document = results.documents[0][i];
+          const distance = results.distances[0][i];
+          
+          formattedResults.push({
+            id,
+            type: metadata.type,
+            name: metadata.name,
+            tags: metadata.tags ? metadata.tags.split(',') : [],
+            relevance: 1 - distance, // Convert distance to relevance score
+            preview: document.substring(0, 100) + '...'
+          });
+        }
+        
+        return formattedResults;
+      } catch (error) {
+        console.warn("Error finding related assets with Chroma:", error.message);
       }
-      
-      return formattedResults;
-    } catch (error) {
-      console.warn("Error finding related assets:", error.message);
-      return [];
+    } else {
+      console.warn("Chroma client not available, cannot find related assets");
     }
+    
+    // If Chroma is not available or fails, try a simple keyword-based approach with MongoDB
+    if (mongoClient) {
+      try {
+        const db = mongoClient.db(config.mongodb.database);
+        
+        // Extract keywords from the asset content
+        const keywords = asset.content.split(/\s+/).filter(word => word.length > 5).slice(0, 5);
+        
+        if (keywords.length === 0) {
+          return [];
+        }
+        
+        // Build query
+        const mongoQuery = {
+          $text: { $search: keywords.join(' ') },
+          id: { $ne: assetId } // Exclude the original asset
+        };
+        
+        if (options.type) {
+          mongoQuery.type = options.type;
+        }
+        
+        // Execute query
+        const results = await db.collection('memory_assets')
+          .find(mongoQuery)
+          .project({
+            score: { $meta: 'textScore' },
+            id: 1,
+            type: 1,
+            name: 1,
+            tags: 1,
+            content: 1
+          })
+          .sort({ score: { $meta: 'textScore' } })
+          .limit(options.limit || 5)
+          .toArray();
+        
+        // Format results
+        return results.map(result => ({
+          id: result.id,
+          type: result.type,
+          name: result.name,
+          tags: result.tags || [],
+          relevance: result.score,
+          preview: result.content.substring(0, 100) + '...'
+        }));
+      } catch (error) {
+        console.warn("Error finding related assets with MongoDB:", error.message);
+      }
+    } else {
+      console.warn("MongoDB client not available, cannot find related assets");
+    }
+    
+    // If we get here, all methods failed or were unavailable
+    return [];
   } catch (error) {
     console.error("Error finding related assets:", error);
     throw error;
