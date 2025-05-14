@@ -4,7 +4,7 @@
  * Provides utility functions for accessing and managing Roo Framework resources.
  *
  * @module roo-framework
- * @version 4.3.2
+ * @version 4.5.0
  */
 
 const fs = require('fs');
@@ -262,6 +262,20 @@ function initializeModules() {
       getRooDirectory: core.getRooDirectory,
       logModeActivity: core.logModeActivity
     });
+    
+    // Initialize memory controller with both adapters
+    if (memoryController) {
+      // Check if LangChain integration is enabled in .env
+      const useLangChainMemory = process.env.USE_LANGCHAIN_MEMORY === 'true';
+      
+      memoryController.initialize({
+        originalAdapter: memory,
+        langchainAdapter: langchainMemory,
+        useLangChain: useLangChainMemory
+      });
+      
+      console.log(`Memory controller initialized. Using ${useLangChainMemory ? 'LangChain' : 'original'} adapter.`);
+    }
   }
   
   boomerang.initialize({
@@ -572,6 +586,31 @@ module.exports = {
   get memoryController() {
     if (!memoryController) initializeModules();
     return memoryController;
+  },
+  
+  // Helper to toggle LangChain integration
+  enableLangChainMemory: (enable = true) => {
+    if (!memoryController) initializeModules();
+    
+    if (memoryController) {
+      memoryController.setUseLangChain(enable);
+      console.log(`LangChain memory integration ${enable ? 'enabled' : 'disabled'}`);
+      return true;
+    } else {
+      console.warn('Memory controller not available. Cannot toggle LangChain integration.');
+      return false;
+    }
+  },
+  
+  // Check if LangChain integration is enabled
+  isLangChainMemoryEnabled: () => {
+    if (!memoryController) initializeModules();
+    
+    if (memoryController) {
+      return memoryController.isUsingLangChain();
+    } else {
+      return false;
+    }
   },
   
   // Version information

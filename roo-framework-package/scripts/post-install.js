@@ -38,7 +38,8 @@ console.log(`${colors.yellow}Important:${colors.reset} You need to run the setup
 console.log(`\n${colors.cyan}npx roo-framework setup${colors.reset}\n`);
 
 console.log(`This will create the necessary files and directories in your project root,`);
-console.log(`set up the boomerang state tracking system, and configure the framework for use.`);
+console.log(`set up the boomerang state tracking system, configure the framework for use,`);
+console.log(`and optionally set up LangChain integration for enhanced memory capabilities.`);
 console.log(`The setup script will guide you through the process and confirm the project root directory.\n`);
 
 console.log(`${colors.bright}Documentation:${colors.reset}`);

@@ -50,6 +50,7 @@ ${colors.bright}Commands:${colors.reset}
   ${colors.cyan}memory <subcommand>${colors.reset} Memory management commands
   ${colors.cyan}boomerang <subcommand>${colors.reset} Boomerang task management commands
   ${colors.cyan}mode <subcommand>${colors.reset}  Mode management commands
+  ${colors.cyan}langchain <subcommand>${colors.reset} LangChain integration commands
   ${colors.cyan}help${colors.reset}               Show this help message
   ${colors.cyan}version${colors.reset}            Show version information
 
@@ -74,6 +75,12 @@ ${colors.bright}Mode Subcommands:${colors.reset}
   ${colors.cyan}mode list${colors.reset}          List all available modes
   ${colors.cyan}mode info <slug>${colors.reset}   Show information about a specific mode
 
+${colors.bright}LangChain Subcommands:${colors.reset}
+
+  ${colors.cyan}langchain setup${colors.reset}    Setup LangChain integration
+  ${colors.cyan}langchain test${colors.reset}     Test LangChain integration
+  ${colors.cyan}langchain example${colors.reset}  Run LangChain example
+
 ${colors.bright}Examples:${colors.reset}
 
   ${colors.dim}# Setup the framework in the current project${colors.reset}
@@ -90,6 +97,9 @@ ${colors.bright}Examples:${colors.reset}
 
   ${colors.dim}# Create a new boomerang task${colors.reset}
   $ roo-framework boomerang create
+
+  ${colors.dim}# Setup LangChain integration${colors.reset}
+  $ roo-framework langchain setup
 `);
 }
 
@@ -577,6 +587,59 @@ function getModeInfo(modeSlug) {
   }
 }
 
+// LangChain integration commands
+function handleLangChainCommands(args) {
+  const subcommand = args[0] || 'setup';
+  
+  switch (subcommand) {
+    case 'setup':
+      console.log(`${colors.bright}Setting up LangChain integration...${colors.reset}`);
+      runLangChainSetup();
+      break;
+    case 'test':
+      console.log(`${colors.bright}Testing LangChain integration...${colors.reset}`);
+      runLangChainTest();
+      break;
+    case 'example':
+      console.log(`${colors.bright}Running LangChain example...${colors.reset}`);
+      runLangChainExample();
+      break;
+    default:
+      console.log(`${colors.red}Error: Unknown LangChain subcommand: ${subcommand}${colors.reset}`);
+      console.log(`Run ${colors.cyan}roo-framework help${colors.reset} for usage information.`);
+  }
+}
+
+// Run LangChain setup
+function runLangChainSetup() {
+  try {
+    require('./scripts/setup-langchain-env');
+  } catch (error) {
+    console.log(`${colors.red}Error: LangChain setup script not found.${colors.reset}`);
+    console.log(`${colors.yellow}Please ensure the package is installed correctly.${colors.reset}`);
+  }
+}
+
+// Run LangChain test
+function runLangChainTest() {
+  try {
+    require('./scripts/test-langchain-integration');
+  } catch (error) {
+    console.log(`${colors.red}Error: LangChain test script not found.${colors.reset}`);
+    console.log(`${colors.yellow}Please ensure the package is installed correctly.${colors.reset}`);
+  }
+}
+
+// Run LangChain example
+function runLangChainExample() {
+  try {
+    require('./examples/langchain-memory-example');
+  } catch (error) {
+    console.log(`${colors.red}Error: LangChain example not found.${colors.reset}`);
+    console.log(`${colors.yellow}Please ensure the package is installed correctly.${colors.reset}`);
+  }
+}
+
 // Main function
 function main() {
   const args = process.argv.slice(2);
@@ -613,6 +676,9 @@ function main() {
         break;
       case 'mode':
         handleModeCommands(args.slice(1));
+        break;
+      case 'langchain':
+        handleLangChainCommands(args.slice(1));
         break;
     default:
       console.log(`${colors.red}Error: Unknown command: ${command}${colors.reset}`);

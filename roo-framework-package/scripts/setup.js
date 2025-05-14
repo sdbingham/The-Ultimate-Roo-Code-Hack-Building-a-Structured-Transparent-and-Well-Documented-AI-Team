@@ -284,7 +284,7 @@ volumes:
             console.log(`${colors.red}❌ Docker is not installed or not in PATH.${colors.reset}`);
             console.log(`${colors.yellow}Please install Docker and Docker Compose, then run:${colors.reset}`);
             console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
-            finishSetup();
+            setupLangChain();
             return;
           }
           
@@ -300,14 +300,14 @@ volumes:
               console.log(`${colors.green}✓ Docker containers started successfully!${colors.reset}`);
               console.log(`${colors.dim}${stdout}${colors.reset}`);
             }
-            finishSetup();
+            setupLangChain();
           });
         });
       } else {
         console.log(`\n${colors.yellow}Skipping Docker container startup.${colors.reset}`);
         console.log(`${colors.yellow}To start the containers manually, run:${colors.reset}`);
         console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
-        finishSetup();
+        setupLangChain();
       }
     });
     
@@ -319,8 +319,68 @@ volumes:
   }
 }
 
+// Function to set up LangChain integration
+function setupLangChain() {
+  console.log(`\n${colors.bright}LangChain Integration Setup:${colors.reset}`);
+  console.log(`The framework supports LangChain integration for enhanced memory capabilities.`);
+  rl.question(`${colors.yellow}Do you want to set up LangChain integration? (Y/n) ${colors.reset}`, (answer) => {
+    if (answer.toLowerCase() !== 'n' && answer.toLowerCase() !== 'no') {
+      console.log(`\n${colors.cyan}Setting up LangChain integration...${colors.reset}`);
+      
+      // Create .env file if it doesn't exist
+      const envPath = path.join(projectRoot, '.env');
+      if (!fs.existsSync(envPath)) {
+        fs.writeFileSync(envPath, `# Roo Framework Environment Variables\n\n# LangChain API Keys\n# ANTHROPIC_API_KEY=your_anthropic_api_key\n# OPENAI_API_KEY=your_openai_api_key\n\n# LangChain Configuration\nUSE_LANGCHAIN_MEMORY=false\n`);
+        console.log(`${colors.green}✓ Created .env file with LangChain configuration${colors.reset}`);
+      } else {
+        // Append LangChain configuration to existing .env file if not already present
+        let envContent = fs.readFileSync(envPath, 'utf8');
+        if (!envContent.includes('ANTHROPIC_API_KEY') && !envContent.includes('OPENAI_API_KEY')) {
+          envContent += `\n# LangChain API Keys\n# ANTHROPIC_API_KEY=your_anthropic_api_key\n# OPENAI_API_KEY=your_openai_api_key\n`;
+          fs.writeFileSync(envPath, envContent);
+          console.log(`${colors.green}✓ Added LangChain API key configuration to .env file${colors.reset}`);
+        }
+        if (!envContent.includes('USE_LANGCHAIN_MEMORY')) {
+          envContent += `\n# LangChain Configuration\nUSE_LANGCHAIN_MEMORY=false\n`;
+          fs.writeFileSync(envPath, envContent);
+          console.log(`${colors.green}✓ Added LangChain configuration to .env file${colors.reset}`);
+        }
+      }
+      
+      // Ask if user wants to install LangChain dependencies
+      rl.question(`${colors.yellow}Do you want to install LangChain dependencies now? (Y/n) ${colors.reset}`, (installAnswer) => {
+        if (installAnswer.toLowerCase() !== 'n' && installAnswer.toLowerCase() !== 'no') {
+          console.log(`\n${colors.cyan}Installing LangChain dependencies...${colors.reset}`);
+          console.log(`${colors.dim}This may take a few minutes.${colors.reset}`);
+          
+          // Install LangChain dependencies
+          exec('npm install langchain @langchain/openai @langchain/anthropic @langchain/community', { cwd: projectRoot }, (error, stdout, stderr) => {
+            if (error) {
+              console.log(`${colors.red}❌ Error installing LangChain dependencies:${colors.reset}`);
+              console.log(stderr);
+              console.log(`${colors.yellow}Please install them manually:${colors.reset}`);
+              console.log(`${colors.dim}npm install langchain @langchain/openai @langchain/anthropic @langchain/community${colors.reset}`);
+            } else {
+              console.log(`${colors.green}✓ LangChain dependencies installed successfully!${colors.reset}`);
+            }
+            finishSetup(true);
+          });
+        } else {
+          console.log(`\n${colors.yellow}Skipping LangChain dependency installation.${colors.reset}`);
+          console.log(`${colors.yellow}To install them manually, run:${colors.reset}`);
+          console.log(`${colors.dim}npm install langchain @langchain/openai @langchain/anthropic @langchain/community${colors.reset}`);
+          finishSetup(true);
+        }
+      });
+    } else {
+      console.log(`\n${colors.yellow}Skipping LangChain integration setup.${colors.reset}`);
+      finishSetup(false);
+    }
+  });
+}
+
 // Function to display final setup information
-function finishSetup() {
+function finishSetup(langchainSetup) {
   console.log(`\n${colors.cyan}Next steps:${colors.reset}`);
   console.log(`1. Generate environment variables example: ${colors.dim}npm run env:generate${colors.reset}`);
   console.log(`2. Generate Docker documentation: ${colors.dim}npm run docs:generate${colors.reset}`);
@@ -328,5 +388,15 @@ function finishSetup() {
   console.log(`4. Access the framework in your code: ${colors.dim}const rooFramework = require('@sdbingham/roo-framework');${colors.reset}`);
   console.log(`5. Use memory for knowledge management: ${colors.dim}rooFramework.memory.createMemoryAsset(...)${colors.reset}`);
   console.log(`6. Use boomerang for task tracking: ${colors.dim}rooFramework.boomerang.createTask(...)${colors.reset}`);
+  
+  if (langchainSetup) {
+    console.log(`\n${colors.cyan}LangChain Integration:${colors.reset}`);
+    console.log(`1. Configure your API keys in .env file: ${colors.dim}ANTHROPIC_API_KEY=your_api_key${colors.reset}`);
+    console.log(`2. Enable LangChain integration: ${colors.dim}USE_LANGCHAIN_MEMORY=true${colors.reset}`);
+    console.log(`3. Run LangChain integration test: ${colors.dim}npm run test-langchain${colors.reset}`);
+    console.log(`4. Try the LangChain example: ${colors.dim}npm run langchain-example${colors.reset}`);
+    console.log(`5. Access LangChain memory controller: ${colors.dim}const memoryController = rooFramework.memoryController;${colors.reset}`);
+  }
+  
   rl.close();
 }
