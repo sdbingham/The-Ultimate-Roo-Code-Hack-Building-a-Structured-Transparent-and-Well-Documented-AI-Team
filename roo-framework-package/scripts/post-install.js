@@ -70,7 +70,12 @@ if (isInteractive) {
     } else {
       console.log(`\n${colors.green}Running setup...${colors.reset}\n`);
       try {
+        // Generate environment template
+        console.log(`\n${colors.green}Generating environment template...${colors.reset}\n`);
+        execSync('npx roo-framework generate-env', { stdio: 'inherit' });
+        
         // Run the setup script
+        console.log(`\n${colors.green}Running setup...${colors.reset}\n`);
         execSync('npx roo-framework setup', { stdio: 'inherit' });
         rl.close();
       } catch (error) {

@@ -25,13 +25,13 @@ You can configure the database connections using environment variables:
 
 ```
 ROO_WEAVIATE_SCHEME=http
-ROO_WEAVIATE_HOST=localhost:8080
-ROO_NEO4J_URI=bolt://localhost:7687
+ROO_WEAVIATE_HOST=localhost:8081
+ROO_NEO4J_URI=bolt://localhost:7688
 ROO_NEO4J_USERNAME=neo4j
 ROO_NEO4J_PASSWORD=password
-ROO_MONGODB_URI=mongodb://localhost:27017
+ROO_MONGODB_URI=mongodb://root:rootpassword@localhost:27018
 ROO_MONGODB_DATABASE=roo_memory
-ROO_CHROMA_PATH=http://localhost:8000
+ROO_CHROMA_PATH=http://localhost:8001
 ```
 
 ### Docker Setup
@@ -193,7 +193,8 @@ process.env.ROO_WEAVIATE_HOST = 'your-weaviate-instance.cloud';
 process.env.ROO_NEO4J_URI = 'neo4j+s://your-neo4j-instance.cloud';
 process.env.ROO_NEO4J_USERNAME = 'your-username';
 process.env.ROO_NEO4J_PASSWORD = 'your-password';
-process.env.ROO_MONGODB_URI = 'mongodb+srv://your-mongodb-uri';
+process.env.ROO_MONGODB_URI = 'mongodb+srv://username:password@your-mongodb-uri';
+process.env.ROO_MONGODB_DATABASE = 'your_database_name';
 process.env.ROO_CHROMA_PATH = 'https://your-chroma-instance';
 ```
 

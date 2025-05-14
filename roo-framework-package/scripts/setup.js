@@ -149,7 +149,7 @@ function setupRooFramework(projectRoot) {
   weaviate:
     image: semitechnologies/weaviate:1.19.6
     ports:
-      - "8080:8080"
+      - "9081:8080"
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
@@ -158,35 +158,94 @@ function setupRooFramework(projectRoot) {
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
     volumes:
       - weaviate_data:/var/lib/weaviate
+    deploy:
+      resources:
+        limits:
+          memory: \${WEAVIATE_MEMORY_LIMIT:-2G}
+          cpus: \${WEAVIATE_CPU_LIMIT:-1}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:8080/v1/.well-known/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   neo4j:
     image: neo4j:5.9.0
     ports:
-      - "7474:7474"
-      - "7687:7687"
+      - "9475:7474"
+      - "9687:7687"
     environment:
       NEO4J_AUTH: neo4j/password
+      NEO4J_dbms_memory_pagecache_size: \${NEO4J_MEMORY_PAGECACHE:-512M}
+      NEO4J_dbms_memory_heap_initial__size: \${NEO4J_MEMORY_HEAP_INITIAL:-512M}
+      NEO4J_dbms_memory_heap_max__size: \${NEO4J_MEMORY_HEAP_MAX:-1G}
     volumes:
       - neo4j_data:/data
+    deploy:
+      resources:
+        limits:
+          memory: \${NEO4J_MEMORY_LIMIT:-2G}
+          cpus: \${NEO4J_CPU_LIMIT:-1}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:7474"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mongodb:
     image: mongo:6.0
     ports:
-      - "27017:27017"
+      - "29017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    command: ["--auth", "--bind_ip_all", "--wiredTigerCacheSizeGB", "1"]
     volumes:
       - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    deploy:
+      resources:
+        limits:
+          memory: \${MONGODB_MEMORY_LIMIT:-1G}
+          cpus: \${MONGODB_CPU_LIMIT:-1}
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   chroma:
-    image: ghcr.io/chroma-core/chroma:0.4.15
+    image: ghcr.io/chroma-core/chroma:0.5.3
     ports:
-      - "8000:8000"
+      - "9001:8000"
+    environment:
+      CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER: token
+      CHROMA_SERVER_AUTH_CREDENTIALS: \${ROO_CHROMA_AUTH_TOKEN:-admin_token}
+      CHROMA_SERVER_AUTH_PROVIDER: token
+      ALLOW_RESET: 'true'
+      CHROMA_OTEL_EXPORTER_ENDPOINT: ''
+      CHROMA_OTEL_SERVICE_NAME: 'chroma'
+      CHROMA_OTEL_COLLECTION_ENDPOINT: ''
+      NUMPY_EXPERIMENTAL_ARRAY_FUNCTION: '1'
     volumes:
       - chroma_data:/chroma/chroma
+    deploy:
+      resources:
+        limits:
+          memory: \${CHROMA_MEMORY_LIMIT:-1G}
+          cpus: \${CHROMA_CPU_LIMIT:-1}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   weaviate_data:
   neo4j_data:
   mongodb_data:
+  mongodb_config:
   chroma_data:`;
       
       fs.writeFileSync(dockerComposePath, dockerComposeContent);
@@ -263,8 +322,11 @@ volumes:
 // Function to display final setup information
 function finishSetup() {
   console.log(`\n${colors.cyan}Next steps:${colors.reset}`);
-  console.log(`1. Access the framework in your code: ${colors.dim}const rooFramework = require('@sdbingham/roo-framework');${colors.reset}`);
-  console.log(`2. Use memory for knowledge management: ${colors.dim}rooFramework.memory.createMemoryAsset(...)${colors.reset}`);
-  console.log(`3. Use boomerang for task tracking: ${colors.dim}rooFramework.boomerang.createTask(...)${colors.reset}`);
+  console.log(`1. Generate environment variables example: ${colors.dim}npm run env:generate${colors.reset}`);
+  console.log(`2. Generate Docker documentation: ${colors.dim}npm run docs:generate${colors.reset}`);
+  console.log(`3. Check Docker container health: ${colors.dim}npm run docker:health${colors.reset}`);
+  console.log(`4. Access the framework in your code: ${colors.dim}const rooFramework = require('@sdbingham/roo-framework');${colors.reset}`);
+  console.log(`5. Use memory for knowledge management: ${colors.dim}rooFramework.memory.createMemoryAsset(...)${colors.reset}`);
+  console.log(`6. Use boomerang for task tracking: ${colors.dim}rooFramework.boomerang.createTask(...)${colors.reset}`);
   rl.close();
 }

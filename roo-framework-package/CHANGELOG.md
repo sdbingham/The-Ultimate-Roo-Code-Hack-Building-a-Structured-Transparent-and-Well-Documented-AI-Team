@@ -2,6 +2,65 @@
 
 All notable changes to the Roo Framework will be documented in this file.
 
+## [4.3.2] - 2025-05-14
+
+### Fixed
+- Fixed database connection port mismatches in memory-mcp-adapter.js
+- Updated port configurations to match Docker container settings:
+  - Weaviate: Changed from port 8082 to 8081
+  - Neo4j: Changed from port 7689 to 7688
+  - MongoDB: Changed from port 27019 to 27018
+  - Chroma: Changed from port 8002 to 8001
+- Added MongoDB user creation step to setup documentation
+- Improved connection testing approach for Weaviate and Chroma
+- Enhanced troubleshooting documentation for database connections
+
+## [4.3.1] - 2025-05-10
+
+### Fixed
+- Fixed memory mode transition issues
+- Added proper error handling for memory operations
+- Improved memory-related documentation
+- Updated version numbers to reflect changes
+
+## [4.3.0] - 2025-05-10
+
+### Added
+- Added enhanced memory integration with Orchestrator mode
+- Improved memory asset management with relationship tracking
+- Added memory-related examples and documentation
+- Updated version numbers to reflect changes
+
+## [4.2.9] - 2025-05-09
+
+### Fixed
+- Removed duplicate publishConfig in package.json
+- Fixed conflicting registry configurations
+- Ensured npm registry is used for publishing
+- Updated version numbers to reflect changes
+
+## [4.2.8] - 2025-05-09
+
+### Fixed
+- Removed GitHub Packages registry configuration from .npmrc files
+- Simplified .npmrc files to use npm registry only
+- Fixed environment variable issues with NPM_TOKEN
+- Updated version numbers to reflect changes
+
+## [4.2.7] - 2025-05-09
+
+### Changed
+- Updated package.json to publish to npm registry
+- Added publishConfig with registry and access settings
+- Updated version numbers to reflect changes
+
+## [4.2.6] - 2025-05-09
+
+### Fixed
+- Updated authentication approach for GitHub Packages
+- Added direct token configuration in .npmrc files
+- Updated version numbers to reflect changes
+
 ## [4.2.5] - 2025-05-09
 
 ### Added

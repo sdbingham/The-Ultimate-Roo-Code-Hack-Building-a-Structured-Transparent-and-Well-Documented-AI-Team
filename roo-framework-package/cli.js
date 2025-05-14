@@ -45,6 +45,8 @@ ${colors.bright}Commands:${colors.reset}
 
   ${colors.cyan}setup${colors.reset}              Setup the Roo Framework
   ${colors.cyan}verify${colors.reset}             Verify the Roo Framework installation
+  ${colors.cyan}docker-health${colors.reset}      Check Docker container health
+  ${colors.cyan}generate-env${colors.reset}       Generate .env.template file
   ${colors.cyan}memory <subcommand>${colors.reset} Memory management commands
   ${colors.cyan}boomerang <subcommand>${colors.reset} Boomerang task management commands
   ${colors.cyan}mode <subcommand>${colors.reset}  Mode management commands
@@ -79,6 +81,12 @@ ${colors.bright}Examples:${colors.reset}
 
   ${colors.dim}# Verify the framework installation${colors.reset}
   $ roo-framework verify
+
+  ${colors.dim}# Check Docker container health${colors.reset}
+  $ roo-framework docker-health
+
+  ${colors.dim}# Generate environment template file${colors.reset}
+  $ roo-framework generate-env
 
   ${colors.dim}# Create a new boomerang task${colors.reset}
   $ roo-framework boomerang create
@@ -117,6 +125,28 @@ function runVerify() {
       console.log(`Missing paths:`);
       result.missingPaths.forEach(p => console.log(`  - ${p}`));
     }
+  }
+}
+
+// Docker health check command
+function runDockerHealthCheck() {
+  console.log(`${colors.bright}Checking Docker container health...${colors.reset}`);
+  try {
+    require('./scripts/docker-health-check');
+  } catch (error) {
+    console.log(`${colors.red}Error: Docker health check script not found.${colors.reset}`);
+    console.log(`${colors.yellow}Please ensure the package is installed correctly.${colors.reset}`);
+  }
+}
+
+// Generate environment template command
+function runGenerateEnvTemplate() {
+  console.log(`${colors.bright}Generating environment template...${colors.reset}`);
+  try {
+    require('./scripts/generate-env-template');
+  } catch (error) {
+    console.log(`${colors.red}Error: Generate environment template script not found.${colors.reset}`);
+    console.log(`${colors.yellow}Please ensure the package is installed correctly.${colors.reset}`);
   }
 }
 
@@ -568,6 +598,12 @@ function main() {
         break;
       case 'verify':
         runVerify();
+        break;
+      case 'docker-health':
+        runDockerHealthCheck();
+        break;
+      case 'generate-env':
+        runGenerateEnvTemplate();
         break;
       case 'memory':
         handleMemoryCommands(args.slice(1));

@@ -1,12 +1,25 @@
 {
   "name": "roo-framework-project",
-  "version": "2.2.5",
+  "version": "4.3.0",
   "description": "Project using the Roo Framework with Docker Integration",
   "private": true,
   "scripts": {
-    "test": "echo \"No tests available\""
+    "test": "echo \"No tests available\"",
+    "docker:start": "docker compose up -d",
+    "docker:stop": "docker compose down",
+    "docker:restart": "docker compose restart",
+    "docker:status": "docker compose ps",
+    "docker:logs": "docker compose logs",
+    "docker:health": "node ./node_modules/@sdbingham/roo-framework/scripts/docker-health-check.js",
+    "env:generate": "node ./node_modules/@sdbingham/roo-framework/scripts/generate-env-example.js",
+    "docs:generate": "node ./node_modules/@sdbingham/roo-framework/scripts/generate-docker-docs.js",
+    "setup": "node ./node_modules/@sdbingham/roo-framework/scripts/setup.js"
   },
   "dependencies": {
-    "@sdbingham/roo-framework": "file:./roo-framework-package"
+    "@sdbingham/roo-framework": "file:./roo-framework-package",
+    "chromadb": "^2.4.4",
+    "mongodb": "^6.16.0",
+    "neo4j-driver": "^5.28.1",
+    "weaviate-ts-client": "^2.2.0"
   }
 }

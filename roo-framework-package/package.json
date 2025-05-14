@@ -1,6 +1,6 @@
 {
   "name": "@sdbingham/roo-framework",
-  "version": "4.2.6",
+  "version": "4.3.2",
   "description": "Structured, Transparent, and Well-Documented AI Team Framework with Docker Integration",
   "main": "index.js",
   "bin": {
@@ -13,11 +13,18 @@
     "boomerang": "node cli.js boomerang",
     "mode": "node cli.js mode",
     "diagnose": "node scripts/diagnose-root-issue.js",
+    "docker-health": "node scripts/docker-health-check.js",
+    "generate-env": "node scripts/generate-env-template.js",
+    "generate-docs": "node scripts/generate-docker-docs.js",
     "test": "echo \"No tests available\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sdbingham/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "keywords": [
     "roo",
@@ -41,9 +48,6 @@
     "url": "https://github.com/Mnehmos/The-Ultimate-Roo-Code-Hack-Building-a-Structured-Transparent-and-Well-Documented-AI-Team/issues"
   },
   "license": "MIT",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "engines": {
     "node": ">=14.0.0"
   },
@@ -54,7 +58,13 @@
     "scripts/setup.js",
     "scripts/post-install.js",
     "scripts/diagnose-root-issue.js",
+    "scripts/docker-health-check.js",
+    "scripts/memory-health-check.js",
+    "scripts/generate-env-template.js",
+    "scripts/generate-env-example.js",
+    "scripts/generate-docker-docs.js",
     ".roomodes",
+    ".env.template",
     "templates/",
     "README.md",
     "CHANGELOG.md",

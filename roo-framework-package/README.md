@@ -3,7 +3,7 @@
 A structured, transparent, and well-documented AI team framework for managing multi-agent workflows.
 
 ![Roo Framework](https://img.shields.io/badge/Roo-Framework-blue)
-![Version](https://img.shields.io/badge/Version-4.2.5-green)
+![Version](https://img.shields.io/badge/Version-4.2.9-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ## What is the Roo Framework?
