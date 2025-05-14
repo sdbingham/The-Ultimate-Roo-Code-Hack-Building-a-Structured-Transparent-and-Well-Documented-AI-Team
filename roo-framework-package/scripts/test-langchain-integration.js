@@ -25,13 +25,17 @@ const { v4: uuidv4 } = require('uuid');
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 // Check for Claude API key
-if (!process.env.ANTHROPIC_API_KEY) {
-  console.error('ANTHROPIC_API_KEY not found in .env file');
-  console.error('Please add ANTHROPIC_API_KEY=your_api_key to your .env file');
+if (process.env.CLAUDE_API_KEY) {
+  // Use CLAUDE_API_KEY as ANTHROPIC_API_KEY
+  process.env.ANTHROPIC_API_KEY = process.env.CLAUDE_API_KEY;
+  console.log('Using CLAUDE_API_KEY as ANTHROPIC_API_KEY');
+} else if (!process.env.ANTHROPIC_API_KEY) {
+  console.error('Neither ANTHROPIC_API_KEY nor CLAUDE_API_KEY found in .env file');
+  console.error('Please add ANTHROPIC_API_KEY=your_api_key or CLAUDE_API_KEY=your_api_key to your .env file');
   process.exit(1);
 }
 
-console.log('Found ANTHROPIC_API_KEY in .env file');
+console.log('Found API key for Claude');
 
 // Test configuration
 const TEST_ASSETS = [
