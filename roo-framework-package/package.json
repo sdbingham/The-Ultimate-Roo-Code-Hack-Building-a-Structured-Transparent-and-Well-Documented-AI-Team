@@ -1,6 +1,6 @@
 {
   "name": "@sdbingham/roo-framework",
-  "version": "4.3.2",
+  "version": "4.5.0",
   "description": "Structured, Transparent, and Well-Documented AI Team Framework with Docker Integration",
   "main": "index.js",
   "bin": {
@@ -17,7 +17,8 @@
     "generate-env": "node scripts/generate-env-template.js",
     "generate-docs": "node scripts/generate-docker-docs.js",
     "test": "echo \"No tests available\"",
-    "langchain-example": "node examples/langchain-memory-example.js"
+    "langchain-example": "node examples/langchain-memory-example.js",
+    "test-langchain": "node scripts/test-langchain-integration.js"
   },
   "repository": {
     "type": "git",
