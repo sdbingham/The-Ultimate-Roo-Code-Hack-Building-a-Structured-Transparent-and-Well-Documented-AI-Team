@@ -18,11 +18,22 @@ process.env.USE_LANGCHAIN_MEMORY = 'true';
 // Import required modules
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 const memoryController = require('../lib/langchain/memory-controller');
 const { v4: uuidv4 } = require('uuid');
 
 // Load environment variables from .env file
+// Try current directory first
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+
+// If CLAUDE_API_KEY is not found, try parent directory
+if (!process.env.CLAUDE_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+  const parentEnvPath = path.resolve(process.cwd(), '..', '.env');
+  if (fs.existsSync(parentEnvPath)) {
+    console.log('Looking for .env file in parent directory...');
+    dotenv.config({ path: parentEnvPath });
+  }
+}
 
 // Check for Claude API key
 if (process.env.CLAUDE_API_KEY) {
