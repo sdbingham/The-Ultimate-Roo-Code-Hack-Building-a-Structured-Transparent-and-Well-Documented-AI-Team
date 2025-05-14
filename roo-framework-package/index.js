@@ -4,7 +4,7 @@
  * Provides utility functions for accessing and managing Roo Framework resources.
  *
  * @module roo-framework
- * @version 3.0.0
+ * @version 4.3.2
  */
 
 const fs = require('fs');
@@ -15,7 +15,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Forward declarations to avoid circular dependencies
-let memory, boomerang, modes;
+let memory, boomerang, modes, langchainMemory, memoryController;
 
 /**
  * Safely reads a file with error handling
@@ -237,12 +237,32 @@ function initializeModules() {
   boomerang = require('./lib/boomerang');
   modes = require('./lib/modes');
   
+  // Try to load LangChain modules (optional)
+  try {
+    langchainMemory = require('./lib/langchain/langchain-mcp-adapter');
+    memoryController = require('./lib/langchain/memory-controller');
+    console.log('LangChain MCP adapter loaded successfully');
+  } catch (error) {
+    console.warn('LangChain MCP adapter not available:', error.message);
+    langchainMemory = null;
+    memoryController = null;
+  }
+  
   // Initialize memory adapter
   memory.initialize({
     getProjectRoot: core.getProjectRoot,
     getRooDirectory: core.getRooDirectory,
     logModeActivity: core.logModeActivity
   });
+  
+  // Initialize LangChain memory adapter if available
+  if (langchainMemory) {
+    langchainMemory.initialize({
+      getProjectRoot: core.getProjectRoot,
+      getRooDirectory: core.getRooDirectory,
+      logModeActivity: core.logModeActivity
+    });
+  }
   
   boomerang.initialize({
     getBoomerangState: core.getBoomerangState,
@@ -541,6 +561,17 @@ module.exports = {
   get modes() {
     if (!modes) initializeModules();
     return modes;
+  },
+  
+  // LangChain integration
+  get langchainMemory() {
+    if (!langchainMemory) initializeModules();
+    return langchainMemory;
+  },
+  
+  get memoryController() {
+    if (!memoryController) initializeModules();
+    return memoryController;
   },
   
   // Version information

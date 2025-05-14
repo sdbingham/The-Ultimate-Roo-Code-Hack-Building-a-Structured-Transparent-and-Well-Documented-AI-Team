@@ -4,6 +4,19 @@ All notable changes to the Roo Framework will be documented in this file.
 
 ## [4.3.2] - 2025-05-14
 
+### Added
+- Added LangChain MCP integration for enhanced memory capabilities
+- Created hybrid approach to integrate LangChain with existing database systems
+- Added feature flag system to toggle between original and LangChain adapters
+- Added LangChain-specific features:
+  - Enhanced semantic search using LLM embeddings
+  - Asset summarization using LLMs
+  - Related asset discovery
+  - Chain of thought reasoning capabilities
+- Added comprehensive documentation for LangChain integration
+- Added example code for LangChain memory operations
+- Added optional peer dependencies for LangChain packages
+
 ### Fixed
 - Fixed database connection port mismatches in memory-mcp-adapter.js
 - Updated port configurations to match Docker container settings:
