@@ -1,6 +1,6 @@
 {
   "name": "@sdbingham/roo-framework",
-  "version": "4.5.0",
+  "version": "4.5.4",
   "description": "Structured, Transparent, and Well-Documented AI Team Framework with Docker Integration",
   "main": "index.js",
   "bin": {
@@ -14,7 +14,10 @@
     "mode": "node cli.js mode",
     "diagnose": "node scripts/diagnose-root-issue.js",
     "docker-health": "node scripts/docker-health-check.js",
-    "generate-env": "node scripts/generate-env-template.js",
+    "docker:health": "node scripts/docker-health-check.js",
+    "docker:start": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "docker:restart": "docker-compose down && docker-compose up -d",
     "generate-docs": "node scripts/generate-docker-docs.js",
     "test": "echo \"No tests available\"",
     "langchain-example": "node examples/langchain-memory-example.js",
@@ -63,8 +66,6 @@
     "scripts/diagnose-root-issue.js",
     "scripts/docker-health-check.js",
     "scripts/memory-health-check.js",
-    "scripts/generate-env-template.js",
-    "scripts/generate-env-example.js",
     "scripts/generate-docker-docs.js",
     ".roomodes",
     ".env.template",
@@ -84,27 +85,11 @@
     "mongodb": "^6.3.0",
     "chromadb": "^1.6.1",
     "compute-cosine-similarity": "^1.1.0",
-    "dotenv": "^16.5.0"
-  },
-  "peerDependencies": {
+    "dotenv": "^16.5.0",
     "langchain": "^0.1.0",
     "@langchain/openai": "^0.0.10",
     "@langchain/anthropic": "^0.0.10",
     "@langchain/community": "^0.0.10"
-  },
-  "peerDependenciesMeta": {
-    "langchain": {
-      "optional": true
-    },
-    "@langchain/openai": {
-      "optional": true
-    },
-    "@langchain/anthropic": {
-      "optional": true
-    },
-    "@langchain/community": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "sinon": "^15.0.0",

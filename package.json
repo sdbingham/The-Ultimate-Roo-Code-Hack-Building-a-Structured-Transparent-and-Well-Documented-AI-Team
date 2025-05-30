@@ -1,6 +1,6 @@
 {
   "name": "roo-framework-project",
-  "version": "4.3.0",
+  "version": "4.5.4",
   "description": "Project using the Roo Framework with Docker Integration",
   "private": true,
   "scripts": {
@@ -13,11 +13,19 @@
     "docker:health": "node ./node_modules/@sdbingham/roo-framework/scripts/docker-health-check.js",
     "env:generate": "node ./node_modules/@sdbingham/roo-framework/scripts/generate-env-example.js",
     "docs:generate": "node ./node_modules/@sdbingham/roo-framework/scripts/generate-docker-docs.js",
-    "setup": "node ./node_modules/@sdbingham/roo-framework/scripts/setup.js"
+    "setup": "node ./node_modules/@sdbingham/roo-framework/scripts/setup.js",
+    "test-langchain": "node ./node_modules/@sdbingham/roo-framework/scripts/test-langchain-integration.js",
+    "langchain-example": "node ./node_modules/@sdbingham/roo-framework/examples/langchain-memory-example.js",
+    "setup-langchain": "node ./node_modules/@sdbingham/roo-framework/scripts/setup-langchain-env.js",
+    "setup-all": "node setup-roo-framework.js"
   },
   "dependencies": {
+    "@langchain/anthropic": "^0.0.10",
+    "@langchain/community": "^0.0.10",
+    "@langchain/openai": "^0.0.10",
     "@sdbingham/roo-framework": "file:./roo-framework-package",
     "chromadb": "^2.4.4",
+    "langchain": "^0.1.0",
     "mongodb": "^6.16.0",
     "neo4j-driver": "^5.28.1",
     "weaviate-ts-client": "^2.2.0"

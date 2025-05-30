@@ -72,7 +72,8 @@ export OPENAI_API_KEY=your-openai-api-key
 # Optional: Configure LLM and embedding models
 export ROO_LANGCHAIN_LLM_PROVIDER=anthropic
 export ROO_LANGCHAIN_LLM_MODEL=claude-3-sonnet-20250219
-export ROO_LANGCHAIN_EMBEDDING_PROVIDER=openai
+# Only set this if you want to use a different provider for embeddings
+# export ROO_LANGCHAIN_EMBEDDING_PROVIDER=openai
 export ROO_LANGCHAIN_EMBEDDING_MODEL=text-embedding-ada-002
 ```
 
@@ -177,9 +178,9 @@ The LangChain adapter can be configured using environment variables:
 | Environment Variable | Description | Default Value |
 |----------------------|-------------|---------------|
 | `USE_LANGCHAIN_MEMORY` | Enable LangChain adapter | `false` |
-| `ROO_LANGCHAIN_LLM_PROVIDER` | LLM provider (anthropic, openai) | `anthropic` |
-| `ROO_LANGCHAIN_EMBEDDING_PROVIDER` | Embedding provider (openai) | `openai` |
-| `ANTHROPIC_API_KEY` | Anthropic API key | - |
+| `ROO_LANGCHAIN_LLM_PROVIDER` | Provider for both LLM and embeddings (anthropic, openai) | `anthropic` |
+| `ROO_LANGCHAIN_EMBEDDING_PROVIDER` | Optional: Override embedding provider | Same as LLM provider |
+| `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` | API key for the chosen provider | - |
 | `OPENAI_API_KEY` | OpenAI API key | - |
 | `ROO_LANGCHAIN_LLM_MODEL` | LLM model name | `claude-3-sonnet-20250219` |
 | `ROO_LANGCHAIN_EMBEDDING_MODEL` | Embedding model name | `text-embedding-ada-002` |

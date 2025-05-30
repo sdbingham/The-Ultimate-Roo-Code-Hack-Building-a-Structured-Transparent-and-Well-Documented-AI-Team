@@ -27,7 +27,8 @@ const config = {
   // LangChain-specific configuration
   langchain: {
     llmProvider: process.env.ROO_LANGCHAIN_LLM_PROVIDER || 'anthropic', // 'openai', 'anthropic', etc.
-    embeddingProvider: process.env.ROO_LANGCHAIN_EMBEDDING_PROVIDER || 'openai',
+    // Use the same provider for embeddings as for LLM by default
+    embeddingProvider: process.env.ROO_LANGCHAIN_EMBEDDING_PROVIDER || process.env.ROO_LANGCHAIN_LLM_PROVIDER || 'openai',
     apiKey: {
       anthropic: process.env.ANTHROPIC_API_KEY,
       openai: process.env.OPENAI_API_KEY

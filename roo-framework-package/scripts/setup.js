@@ -17,6 +17,12 @@ const readline = require('readline');
 const { exec } = require('child_process');
 const rooFramework = require('../index');
 
+// Check for non-interactive mode
+const args = process.argv.slice(2);
+const nonInteractiveMode = args.includes('--non-interactive');
+const autoStartDocker = args.includes('--start-docker');
+const skipLangChain = args.includes('--skip-langchain');
+
 // ANSI color codes for console output
 const colors = {
   reset: '\x1b[0m',
@@ -40,32 +46,38 @@ ${colors.bright}${colors.blue}╔═══════════════�
 ╚══════════════════════════════════════════════════════════╝${colors.reset}
 `);
 
-// Create readline interface for user input
-const rl = readline.createInterface({
+// Default to current working directory
+let projectRoot = process.cwd();
+
+// Create readline interface for user input if not in non-interactive mode
+const rl = nonInteractiveMode ? null : readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-// Default to current working directory
-let projectRoot = process.cwd();
+if (nonInteractiveMode) {
+  console.log(`${colors.bright}Running in non-interactive mode${colors.reset}`);
+  console.log(`${colors.green}Using current directory as project root: ${projectRoot}${colors.reset}`);
+  setupRooFramework(projectRoot);
+} else {
+  // Ask user to confirm project root
+  console.log(`${colors.bright}Project Root Detection:${colors.reset}`);
+  console.log(`Detected current directory: ${projectRoot}`);
 
-// Ask user to confirm project root
-console.log(`${colors.bright}Project Root Detection:${colors.reset}`);
-console.log(`Detected current directory: ${projectRoot}`);
-
-// Ask user to confirm or change project root
-rl.question(`${colors.yellow}Is this the correct project root? (Y/n) ${colors.reset}`, (answer) => {
-  if (answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no') {
-    rl.question(`${colors.yellow}Please enter the full path to your project root: ${colors.reset}`, (customPath) => {
-      projectRoot = customPath.trim();
-      console.log(`${colors.green}Using custom project root: ${projectRoot}${colors.reset}`);
+  // Ask user to confirm or change project root
+  rl.question(`${colors.yellow}Is this the correct project root? (Y/n) ${colors.reset}`, (answer) => {
+    if (answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no') {
+      rl.question(`${colors.yellow}Please enter the full path to your project root: ${colors.reset}`, (customPath) => {
+        projectRoot = customPath.trim();
+        console.log(`${colors.green}Using custom project root: ${projectRoot}${colors.reset}`);
+        setupRooFramework(projectRoot);
+      });
+    } else {
+      console.log(`${colors.green}Using current directory as project root${colors.reset}`);
       setupRooFramework(projectRoot);
-    });
-  } else {
-    console.log(`${colors.green}Using current directory as project root${colors.reset}`);
-    setupRooFramework(projectRoot);
-  }
-});
+    }
+  });
+}
 
 // Setup function with error handling
 function setupRooFramework(projectRoot) {
@@ -81,7 +93,9 @@ function setupRooFramework(projectRoot) {
     } catch (permError) {
       console.error(`${colors.red}❌ Error: No write permissions to project root ${projectRoot}${colors.reset}`);
       console.error(`${colors.red}Please run this script with appropriate permissions or choose a different directory.${colors.reset}`);
-      rl.close();
+      if (!nonInteractiveMode && rl) {
+        rl.close();
+      }
       process.exit(1);
     }
 
@@ -271,11 +285,10 @@ volumes:
       console.log(`\n${colors.yellow}Please check permissions and try running the setup again.${colors.reset}`);
     }
     
-    // Always ask if user wants to start Docker containers, regardless of verification
-    console.log(`\n${colors.bright}Docker Setup:${colors.reset}`);
-    console.log(`The framework requires database servers for full functionality.`);
-    rl.question(`${colors.yellow}Do you want to start the required database servers using Docker? (Y/n) ${colors.reset}`, (answer) => {
-      if (answer.toLowerCase() !== 'n' && answer.toLowerCase() !== 'no') {
+    // Handle Docker setup
+    if (nonInteractiveMode) {
+      if (autoStartDocker) {
+        console.log(`\n${colors.bright}Docker Setup (Automatic):${colors.reset}`);
         console.log(`\n${colors.cyan}Starting Docker containers...${colors.reset}`);
         
         // Check if Docker is installed
@@ -288,14 +301,11 @@ volumes:
             return;
           }
           
-          // Start Docker containers - use 'docker compose' instead of 'docker-compose'
-          // as 'docker-compose' is deprecated
+          // Start Docker containers
           exec('docker compose up -d', { cwd: projectRoot }, (error, stdout, stderr) => {
             if (error) {
               console.log(`${colors.red}❌ Error starting Docker containers:${colors.reset}`);
               console.log(stderr);
-              console.log(`${colors.yellow}Please start them manually:${colors.reset}`);
-              console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
             } else {
               console.log(`${colors.green}✓ Docker containers started successfully!${colors.reset}`);
               console.log(`${colors.dim}${stdout}${colors.reset}`);
@@ -304,99 +314,198 @@ volumes:
           });
         });
       } else {
-        console.log(`\n${colors.yellow}Skipping Docker container startup.${colors.reset}`);
-        console.log(`${colors.yellow}To start the containers manually, run:${colors.reset}`);
-        console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+        console.log(`\n${colors.yellow}Skipping Docker container startup (non-interactive mode).${colors.reset}`);
         setupLangChain();
       }
-    });
+    } else {
+      // Interactive mode - ask user
+      console.log(`\n${colors.bright}Docker Setup:${colors.reset}`);
+      console.log(`The framework requires database servers for full functionality.`);
+      rl.question(`${colors.yellow}Do you want to start the required database servers using Docker? (Y/n) ${colors.reset}`, (answer) => {
+        if (answer.toLowerCase() !== 'n' && answer.toLowerCase() !== 'no') {
+          console.log(`\n${colors.cyan}Starting Docker containers...${colors.reset}`);
+          
+          // Check if Docker is installed
+          exec('docker --version', (error) => {
+            if (error) {
+              console.log(`${colors.red}❌ Docker is not installed or not in PATH.${colors.reset}`);
+              console.log(`${colors.yellow}Please install Docker and Docker Compose, then run:${colors.reset}`);
+              console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+              setupLangChain();
+              return;
+            }
+            
+            // Start Docker containers - use 'docker compose' instead of 'docker-compose'
+            // as 'docker-compose' is deprecated
+            exec('docker compose up -d', { cwd: projectRoot }, (error, stdout, stderr) => {
+              if (error) {
+                console.log(`${colors.red}❌ Error starting Docker containers:${colors.reset}`);
+                console.log(stderr);
+                console.log(`${colors.yellow}Please start them manually:${colors.reset}`);
+                console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+              } else {
+                console.log(`${colors.green}✓ Docker containers started successfully!${colors.reset}`);
+                console.log(`${colors.dim}${stdout}${colors.reset}`);
+              }
+              setupLangChain();
+            });
+          });
+        } else {
+          console.log(`\n${colors.yellow}Skipping Docker container startup.${colors.reset}`);
+          console.log(`${colors.yellow}To start the containers manually, run:${colors.reset}`);
+          console.log(`${colors.dim}cd ${projectRoot} && docker compose up -d${colors.reset}`);
+          setupLangChain();
+        }
+      });
+    }
     
   } catch (error) {
     console.error(`\n${colors.red}❌ Error during Roo framework setup:${colors.reset}`);
     console.error(error);
-    rl.close();
+    if (!nonInteractiveMode && rl) {
+      rl.close();
+    }
     process.exit(1);
   }
 }
 
 // Function to set up LangChain integration
 function setupLangChain() {
-  console.log(`\n${colors.bright}LangChain Integration Setup:${colors.reset}`);
-  console.log(`The framework supports LangChain integration for enhanced memory capabilities.`);
-  rl.question(`${colors.yellow}Do you want to set up LangChain integration? (Y/n) ${colors.reset}`, (answer) => {
-    if (answer.toLowerCase() !== 'n' && answer.toLowerCase() !== 'no') {
-      console.log(`\n${colors.cyan}Setting up LangChain integration...${colors.reset}`);
-      
-      // Create .env file if it doesn't exist
-      const envPath = path.join(projectRoot, '.env');
-      if (!fs.existsSync(envPath)) {
-        fs.writeFileSync(envPath, `# Roo Framework Environment Variables\n\n# LangChain API Keys\n# ANTHROPIC_API_KEY=your_anthropic_api_key\n# OPENAI_API_KEY=your_openai_api_key\n\n# LangChain Configuration\nUSE_LANGCHAIN_MEMORY=false\n`);
-        console.log(`${colors.green}✓ Created .env file with LangChain configuration${colors.reset}`);
-      } else {
-        // Append LangChain configuration to existing .env file if not already present
-        let envContent = fs.readFileSync(envPath, 'utf8');
-        if (!envContent.includes('ANTHROPIC_API_KEY') && !envContent.includes('OPENAI_API_KEY')) {
-          envContent += `\n# LangChain API Keys\n# ANTHROPIC_API_KEY=your_anthropic_api_key\n# OPENAI_API_KEY=your_openai_api_key\n`;
-          fs.writeFileSync(envPath, envContent);
-          console.log(`${colors.green}✓ Added LangChain API key configuration to .env file${colors.reset}`);
-        }
-        if (!envContent.includes('USE_LANGCHAIN_MEMORY')) {
-          envContent += `\n# LangChain Configuration\nUSE_LANGCHAIN_MEMORY=false\n`;
-          fs.writeFileSync(envPath, envContent);
-          console.log(`${colors.green}✓ Added LangChain configuration to .env file${colors.reset}`);
-        }
-      }
-      
-      // Ask if user wants to install LangChain dependencies
-      rl.question(`${colors.yellow}Do you want to install LangChain dependencies now? (Y/n) ${colors.reset}`, (installAnswer) => {
-        if (installAnswer.toLowerCase() !== 'n' && installAnswer.toLowerCase() !== 'no') {
-          console.log(`\n${colors.cyan}Installing LangChain dependencies...${colors.reset}`);
-          console.log(`${colors.dim}This may take a few minutes.${colors.reset}`);
-          
-          // Install LangChain dependencies
-          exec('npm install langchain @langchain/openai @langchain/anthropic @langchain/community', { cwd: projectRoot }, (error, stdout, stderr) => {
-            if (error) {
-              console.log(`${colors.red}❌ Error installing LangChain dependencies:${colors.reset}`);
-              console.log(stderr);
-              console.log(`${colors.yellow}Please install them manually:${colors.reset}`);
-              console.log(`${colors.dim}npm install langchain @langchain/openai @langchain/anthropic @langchain/community${colors.reset}`);
-            } else {
-              console.log(`${colors.green}✓ LangChain dependencies installed successfully!${colors.reset}`);
-            }
-            finishSetup(true);
-          });
-        } else {
-          console.log(`\n${colors.yellow}Skipping LangChain dependency installation.${colors.reset}`);
-          console.log(`${colors.yellow}To install them manually, run:${colors.reset}`);
-          console.log(`${colors.dim}npm install langchain @langchain/openai @langchain/anthropic @langchain/community${colors.reset}`);
-          finishSetup(true);
-        }
-      });
+  // Skip LangChain setup if explicitly specified with --skip-langchain flag
+  if (skipLangChain) {
+    console.log(`\n${colors.yellow}Skipping LangChain integration setup (--skip-langchain flag).${colors.reset}`);
+    finishSetup(false);
+    return;
+  }
+
+  console.log(`\n${colors.bright}LangChain Integration Setup (Automatic):${colors.reset}`);
+  console.log(`${colors.cyan}Setting up LangChain integration...${colors.reset}`);
+  
+  // Create .env file if it doesn't exist
+  const envPath = path.join(projectRoot, '.env');
+  if (!fs.existsSync(envPath)) {
+    fs.writeFileSync(envPath, `# Roo Framework Environment Variables
+
+# LangChain API Keys
+# ANTHROPIC_API_KEY=your_anthropic_api_key
+# OPENAI_API_KEY=your_openai_api_key
+
+# Memory System Configuration
+# LangChain is used by default, set to 'true' to force original memory adapter
+# USE_ORIGINAL_MEMORY=false
+`);
+    console.log(`${colors.green}✓ Created .env file with LangChain configuration${colors.reset}`);
+  } else {
+    // Append/update LangChain configuration to existing .env file if needed
+    let envContent = fs.readFileSync(envPath, 'utf8');
+    let updated = false;
+    
+    // Add API key configuration if not present
+    if (!envContent.includes('ANTHROPIC_API_KEY') && !envContent.includes('OPENAI_API_KEY')) {
+      envContent += `\n# LangChain API Keys\n# ANTHROPIC_API_KEY=your_anthropic_api_key\n# OPENAI_API_KEY=your_openai_api_key\n`;
+      updated = true;
+    }
+    
+    // Update memory configuration:
+    // - If USE_LANGCHAIN_MEMORY exists, rename to USE_ORIGINAL_MEMORY with inverted value
+    // - If neither exists, add USE_ORIGINAL_MEMORY=false
+    if (envContent.includes('USE_LANGCHAIN_MEMORY=true')) {
+      envContent = envContent.replace(/USE_LANGCHAIN_MEMORY=true/g, '# USE_LANGCHAIN_MEMORY=true (Deprecated)\n# LangChain is now the default memory system\n# USE_ORIGINAL_MEMORY=false');
+      updated = true;
+    } else if (envContent.includes('USE_LANGCHAIN_MEMORY=false')) {
+      envContent = envContent.replace(/USE_LANGCHAIN_MEMORY=false/g, '# USE_LANGCHAIN_MEMORY=false (Deprecated)\n# LangChain is now the default memory system\n# USE_ORIGINAL_MEMORY=true');
+      updated = true;
+    } else if (!envContent.includes('USE_ORIGINAL_MEMORY')) {
+      envContent += `\n# Memory System Configuration\n# LangChain is used by default, set to 'true' to force original memory adapter\n# USE_ORIGINAL_MEMORY=false\n`;
+      updated = true;
+    }
+    
+    if (updated) {
+      fs.writeFileSync(envPath, envContent);
+      console.log(`${colors.green}✓ Updated .env file with LangChain configuration${colors.reset}`);
+    }
+  }
+  
+  // Install LangChain dependencies automatically
+  console.log(`\n${colors.cyan}Installing LangChain dependencies...${colors.reset}`);
+  console.log(`${colors.dim}This may take a few minutes.${colors.reset}`);
+  
+  // We use --legacy-peer-deps because some LangChain dependencies may have peer dependency conflicts
+  exec('npm install langchain@0.1.0 @langchain/openai@0.0.10 @langchain/anthropic@0.0.10 @langchain/community@0.0.10 --legacy-peer-deps', { cwd: projectRoot }, (error, stdout, stderr) => {
+    if (error) {
+      console.log(`${colors.red}❌ Error installing LangChain dependencies:${colors.reset}`);
+      console.log(`${colors.dim}${stderr}${colors.reset}`);
+      console.log(`${colors.yellow}You can try installing them manually:${colors.reset}`);
+      console.log(`${colors.dim}npm install langchain@0.1.0 @langchain/openai@0.0.10 @langchain/anthropic@0.0.10 @langchain/community@0.0.10 --legacy-peer-deps${colors.reset}`);
     } else {
-      console.log(`\n${colors.yellow}Skipping LangChain integration setup.${colors.reset}`);
-      finishSetup(false);
+      console.log(`${colors.green}✓ LangChain dependencies installed successfully!${colors.reset}`);
+    }
+    
+    // Prompt for API keys
+    if (nonInteractiveMode) {
+      finishSetup(true);
+    } else {
+      console.log(`\n${colors.bright}LangChain API Key Setup:${colors.reset}`);
+      console.log(`${colors.yellow}LangChain requires API keys for enhanced functionality.${colors.reset}`);
+      
+      rl.question(`${colors.yellow}Enter your Anthropic API key (optional, press Enter to skip): ${colors.reset}`, (anthropicKey) => {
+        if (anthropicKey && anthropicKey.trim()) {
+          updateEnvFile(envPath, 'ANTHROPIC_API_KEY', anthropicKey.trim());
+          console.log(`${colors.green}✓ Added Anthropic API key to .env file${colors.reset}`);
+        }
+        
+        rl.question(`${colors.yellow}Enter your OpenAI API key (optional, press Enter to skip): ${colors.reset}`, (openaiKey) => {
+          if (openaiKey && openaiKey.trim()) {
+            updateEnvFile(envPath, 'OPENAI_API_KEY', openaiKey.trim());
+            console.log(`${colors.green}✓ Added OpenAI API key to .env file${colors.reset}`);
+          }
+          
+          if (!anthropicKey.trim() && !openaiKey.trim()) {
+            console.log(`${colors.yellow}No API keys provided. Some LangChain features will use fallback methods.${colors.reset}`);
+            console.log(`${colors.yellow}You can add API keys later by editing the .env file.${colors.reset}`);
+          }
+          
+          finishSetup(true);
+        });
+      });
     }
   });
+}
+
+// Helper function to update a specific value in the .env file
+function updateEnvFile(envPath, key, value) {
+  let envContent = fs.readFileSync(envPath, 'utf8');
+  const regex = new RegExp(`^#?\\s*${key}=.*$`, 'm');
+  
+  if (regex.test(envContent)) {
+    // Replace existing line (commented or not)
+    envContent = envContent.replace(regex, `${key}=${value}`);
+  } else {
+    // Add new line
+    envContent += `\n${key}=${value}`;
+  }
+  
+  fs.writeFileSync(envPath, envContent);
 }
 
 // Function to display final setup information
 function finishSetup(langchainSetup) {
   console.log(`\n${colors.cyan}Next steps:${colors.reset}`);
-  console.log(`1. Generate environment variables example: ${colors.dim}npm run env:generate${colors.reset}`);
-  console.log(`2. Generate Docker documentation: ${colors.dim}npm run docs:generate${colors.reset}`);
-  console.log(`3. Check Docker container health: ${colors.dim}npm run docker:health${colors.reset}`);
-  console.log(`4. Access the framework in your code: ${colors.dim}const rooFramework = require('@sdbingham/roo-framework');${colors.reset}`);
-  console.log(`5. Use memory for knowledge management: ${colors.dim}rooFramework.memory.createMemoryAsset(...)${colors.reset}`);
-  console.log(`6. Use boomerang for task tracking: ${colors.dim}rooFramework.boomerang.createTask(...)${colors.reset}`);
+  console.log(`1. Check Docker container health: ${colors.dim}npm run docker:health${colors.reset}`);
+  console.log(`2. Access the framework in your code: ${colors.dim}const rooFramework = require('@sdbingham/roo-framework');${colors.reset}`);
+  console.log(`3. Use memory for knowledge management: ${colors.dim}rooFramework.memory.createMemoryAsset(...)${colors.reset}`);
+  console.log(`4. Use boomerang for task tracking: ${colors.dim}rooFramework.boomerang.createTask(...)${colors.reset}`);
   
   if (langchainSetup) {
     console.log(`\n${colors.cyan}LangChain Integration:${colors.reset}`);
-    console.log(`1. Configure your API keys in .env file: ${colors.dim}ANTHROPIC_API_KEY=your_api_key${colors.reset}`);
-    console.log(`2. Enable LangChain integration: ${colors.dim}USE_LANGCHAIN_MEMORY=true${colors.reset}`);
-    console.log(`3. Run LangChain integration test: ${colors.dim}npm run test-langchain${colors.reset}`);
-    console.log(`4. Try the LangChain example: ${colors.dim}npm run langchain-example${colors.reset}`);
-    console.log(`5. Access LangChain memory controller: ${colors.dim}const memoryController = rooFramework.memoryController;${colors.reset}`);
+    console.log(`1. LangChain is now the default memory system${colors.reset}`);
+    console.log(`2. Add your API keys in .env file: ${colors.dim}ANTHROPIC_API_KEY=your_api_key${colors.reset}`);
+    console.log(`3. If needed, revert to original memory: ${colors.dim}USE_ORIGINAL_MEMORY=true${colors.reset}`);
+    console.log(`4. Run example: ${colors.dim}npm run langchain-example${colors.reset}`);
   }
   
-  rl.close();
+  // Only close readline interface if in interactive mode
+  if (!nonInteractiveMode && rl) {
+    rl.close();
+  }
 }

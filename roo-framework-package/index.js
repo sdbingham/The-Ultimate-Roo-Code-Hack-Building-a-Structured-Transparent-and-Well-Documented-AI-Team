@@ -4,7 +4,7 @@
  * Provides utility functions for accessing and managing Roo Framework resources.
  *
  * @module roo-framework
- * @version 4.5.0
+ * @version 4.5.4
  */
 
 const fs = require('fs');

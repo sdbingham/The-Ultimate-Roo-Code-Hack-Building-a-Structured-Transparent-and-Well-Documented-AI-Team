@@ -2,6 +2,12 @@
 
 All notable changes to the Roo Framework will be documented in this file.
 
+## [4.5.4] - 2025-05-30
+
+### Changed
+- Updated version number for consistency across all project files
+- Minor maintenance updates
+
 ## [4.3.2] - 2025-05-14
 
 ### Added

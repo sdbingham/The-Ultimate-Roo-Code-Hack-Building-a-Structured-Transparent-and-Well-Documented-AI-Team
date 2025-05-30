@@ -1,3 +1,42 @@
+# LangChain Integration Improvements
+
+## Overview
+This document outlines the changes needed to make LangChain the primary memory management system in the Roo Framework with automatic fallback to the original adapter.
+
+## Required Changes
+
+### 1. Memory Controller Updates
+Update `roo-framework-package/lib/langchain/memory-controller.js` with an automatic fallback system:
+
+```javascript
+// Make LangChain the default unless explicitly disabled
+let useLangChain = process.env.USE_ORIGINAL_MEMORY !== 'true' && langchainAvailable;
+
+// Add robust automatic fallback in the proxy handler
+return async function(...args) {
+  try {
+    // Try with the preferred adapter first
+    return await preferredAdapter[prop](...args);
+  } catch (error) {
+    // If we're already using the fallback, just propagate the error
+    if (preferredAdapter === fallbackAdapter) {
+      console.error(`Memory operation failed: ${prop}`, error);
+      throw error;
+    }
+    
+    console.warn(`LangChain adapter operation failed (${prop}): ${error.message}`);
+    console.warn('Falling back to original adapter');
+    
+    // Fall back to the original adapter
+    return fallbackAdapter[prop](...args);
+  }
+};
+```
+
+### 2. Add Docker Health Check Script
+Create a Docker health check script at `roo-framework-package/scripts/docker-health-check.js`:
+
+```javascript
 #!/usr/bin/env node
 
 /**
@@ -175,3 +214,69 @@ main().catch(error => {
   console.error('Unhandled error:', error);
   process.exit(1);
 });
+```
+
+### 3. Update Package Scripts
+Update `roo-framework-package/package.json` to include the Docker health check script:
+
+```json
+"scripts": {
+  "docker:health": "node ./scripts/docker-health-check.js",
+  "docker:start": "docker-compose up -d",
+  "docker:stop": "docker-compose down",
+  "docker:restart": "docker-compose down && docker-compose up -d"
+}
+```
+
+### 4. Make LangChain Installation Automatic
+Update `roo-framework-package/scripts/setup.js` to make LangChain installation automatic:
+
+```javascript
+// Replace the interactive prompts with automatic installation
+async function setupLangChain() {
+  console.log('Setting up LangChain integration (automatic)...');
+  
+  // Install dependencies without prompting
+  console.log('Installing LangChain dependencies...');
+  try {
+    execSync('npm install --save langchain @langchain/community @langchain/openai @langchain/anthropic', {
+      stdio: 'inherit'
+    });
+    console.log('✅ LangChain dependencies installed successfully');
+    
+    // Add API key prompts but make them optional
+    const anthropicKey = await promptForInput('Anthropic API Key (optional, press Enter to skip): ');
+    const openAIKey = await promptForInput('OpenAI API Key (optional, press Enter to skip): ');
+    
+    if (anthropicKey) {
+      addToEnvFile('ANTHROPIC_API_KEY', anthropicKey);
+      console.log('Added Anthropic API key to environment configuration');
+    }
+    
+    if (openAIKey) {
+      addToEnvFile('OPENAI_API_KEY', openAIKey);
+      console.log('Added OpenAI API key to environment configuration');
+    }
+    
+    if (!anthropicKey && !openAIKey) {
+      console.log('⚠️ No API keys provided. LangChain will use fallback mechanisms until keys are added.');
+      console.log('You can add API keys later by editing the .env file');
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error installing LangChain dependencies:', error.message);
+    console.log('⚠️ LangChain setup encountered issues but will continue with limited functionality');
+    return false;
+  }
+}
+```
+
+## Implementation Strategy
+
+1. First implement the Docker health check script and package.json updates
+2. Update the setup script to make LangChain installation automatic
+3. Implement the memory controller changes to prioritize LangChain
+4. Test all functionality thoroughly
+
+This implementation will make LangChain the default memory system while ensuring robust fallback to the original adapter when needed.
